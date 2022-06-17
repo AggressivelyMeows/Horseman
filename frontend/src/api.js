@@ -14,7 +14,7 @@ export default class API {
 
     create_axios() {
         return axios.create({
-            baseURL: 'https://api-dev.constellations.tech/v1',
+            baseURL: `https://${ import.meta.env.PROD ? 'horseman.ceru.dev' : 'api-dev.constellations.tech' }/v1`,
             timeout: 10000,
             headers: {'Authorization': `User ${this.user_token}`}
         })

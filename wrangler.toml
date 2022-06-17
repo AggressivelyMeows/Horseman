@@ -1,14 +1,12 @@
 name = "horseman"
+compatibility_date = "2022-03-30"
 type = "javascript"
-account_id = ""
+account_id = "2dcc5a4f486a50625b4167e90d113158"
 workers_dev = false
-route = ""
-zone_id = ""
 
 kv_namespaces = [
-  { binding = "INDEXKV", id = "", preview_id = "" },
-  { binding = "CONTENTKV", id = "", preview_id = "" },
-  { binding = "STORAGEKV", id = "", preview_id = "" },
+  { binding = "INDEXKV", id = "cb0bc6abf6f44cdab5fd417cd62232e3", preview_id = "" },
+  { binding = "CONTENTKV", id = "a5b404d4836e4594894fc6ab15902568", preview_id = "" },
 ]
 
 [durable_objects]
@@ -16,10 +14,12 @@ bindings = [
   { name = "IndexWriter", class_name = "WriterDO" }
 ]
 
+[[migrations]]
+tag = "v1" # Should be unique for each entry
+new_classes = ["WriterDO"]
+
 [miniflare]
 kv_persist = true # Defaults to ./.mf/kv
-
-
 
 [build]
 command = "npm run build"
