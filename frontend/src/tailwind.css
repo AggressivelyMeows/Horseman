@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.button {
+    @apply border-none;
+}
+
+.heading {
+    @apply text-3xl font-bold text-primary-500
+}
+
+.o-field__message {
+    @apply text-xs text-gray-400 mt-2
+}
+
+.subheading {
+    @apply font-medium text-gray-300 text-sm
+}
+
+.o-field__label {
+    @apply mb-2 font-bold;
+}
+
+.o-input { 
+    @apply border-none rounded-md bg-gray-800 text-sm px-2 py-2 border-gray-700 focus:outline-none focus:border-primary-900 focus:ring-primary-600 focus:ring-1;
+}
+
+.o-ctrl-sel {
+    @apply w-full
+}
+
+.o-sel {
+    @apply w-full border-none rounded-md bg-gray-800 text-sm px-2 py-2 border-gray-700 focus:outline-none focus:border-primary-900 focus:ring-primary-600 focus:ring-1;
+}
+
+.o-inputit {
+    @apply rounded-md overflow-hidden border-none
+}
+
+.o-inputit__container {
+    @apply border-none !important
+}
+
+.o-inputit__item {
+    @apply bg-primary-600 rounded-md ml-0 mr-2 px-1 py-1 text-sm !important
+}
+
+.o-inputit__input {
+    @apply text-gray-200
+}
+
+.o-chk__check {
+    @apply bg-gray-850 text-primary-600 rounded-md border-gray-700 focus:outline-none focus:border-primary-900 focus:ring-primary-600 focus:ring-1 !important 
+}
+
+.o-chk__check--checked {
+    @apply bg-primary-600 !important
+}
+
+.o-chk__label {
+    @apply ml-2 text-sm
+}

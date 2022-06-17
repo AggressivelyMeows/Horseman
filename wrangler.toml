@@ -1,0 +1,28 @@
+name = "horseman"
+type = "javascript"
+account_id = ""
+workers_dev = false
+route = ""
+zone_id = ""
+
+kv_namespaces = [
+  { binding = "INDEXKV", id = "", preview_id = "" },
+  { binding = "CONTENTKV", id = "", preview_id = "" },
+  { binding = "STORAGEKV", id = "", preview_id = "" },
+]
+
+[durable_objects]
+bindings = [
+  { name = "IndexWriter", class_name = "WriterDO" }
+]
+
+[miniflare]
+kv_persist = true # Defaults to ./.mf/kv
+
+
+
+[build]
+command = "npm run build"
+[build.upload]
+format = "modules"
+main='index.js'

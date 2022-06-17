@@ -1,0 +1,114 @@
+<template>
+    <div class="p-4 text-gray-200 ">
+        <div class="flex flex-row  items-center">
+            <h4 class="heading flex-grow">
+                {{ $route.params.objectID == 'new' ? 'Creating' : 'Editing' }} {{model.id}}
+            </h4>
+
+            <a class="button ~green @high" @click="save">
+                Save
+            </a>
+        </div>
+
+        <div class="mt-4 space-y-4 divide-y divide-gray-800">
+            <div v-for="element, idx in model.spec" class="">
+                <o-field v-if="element.type == 'string'" :label="element.name" :message="element.help" class="mt-2 flex-grow">
+                    <input
+                        v-model="object[element.name]"
+                        class="w-full rounded-md bg-gray-800 text-sm px-2 py-2 border-none border-gray-700 focus:outline-none focus:border-primary-900 focus:ring-primary-600 focus:ring-1"
+                        :placeholder="`${element.name}`"
+                    />
+                </o-field>
+
+                <o-field v-if="element.type == 'markdown'" :label="element.name" :message="element.help" class="mt-2 flex-grow">
+                    <textarea v-model="object[element.name]" :placeholder="`${element.name}`" textarea class="w-full rounded-md bg-gray-800 text-sm px-2 py-2 border-none border-gray-700 focus:outline-none focus:border-primary-900 focus:ring-primary-600 focus:ring-1"/>
+                </o-field>
+
+                <o-field v-if="element.type == 'dropdown'" :label="element.name" :message="element.help" class="mt-2 flex-grow">
+                    <o-select :placeholder="`${element.name}`" v-model="object[element.name]">
+                        <option class="text-gray-200" :value="v" v-for="v in element.args.options">{{v}}</option>
+                    </o-select>
+                </o-field>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+    import slugify from 'slugify'
+
+    function array_move(arr, old_index, new_index) {
+        if (new_index >= arr.length) {
+            var k = new_index - arr.length + 1;
+            while (k--) {
+                arr.push(undefined);
+            }
+        }
+        arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+        return arr; // for testing
+    };
+
+    export default {
+        data: () => ({
+            object: {},
+            model: {
+                id: 'new',
+                title: 'new-model',
+                spec: []
+            },
+            spec: []
+        }),
+        mounted() {
+            if (this.$route.params.modelID) {
+                // load model from API
+
+                this.$api.get(`/models/@me/${this.$route.params.modelID}`).then(resp => {
+                    this.model = resp.data.model
+
+                    if (this.$route.params.objectID == 'new') {
+                        this.model.spec.map(field => {
+                            this.object[field.name] = {
+                                string: '',
+                                markdown: '',
+                                dropdown: ''
+                            }[field.type]
+                        })
+                    } else {
+                        this.$api.get(`/models/${this.$route.params.modelID}/objects/${this.$route.params.objectID}`).then(resp => {
+                            this.object = resp.data.object
+                        })
+                    }
+                })
+
+            }
+        },
+        methods: {
+            move_key(idx, move) {
+                this.model.spec = array_move(
+                    this.model.spec,
+                    idx,
+                    idx + move
+                )
+            },
+            new_dropdown_option(field_idx, key) {
+                this.model.spec[field_idx].args.options = this.model.spec[field_idx].args.options || []
+
+                this.model.spec[field_idx].args.options.push('')
+            },
+            new_element() {
+                this.model.spec.push({
+                    name: 'New Field',
+                    type: 'string',
+                    args: {}
+                })
+            },
+            save() {
+                const route = `/models/${this.model.id}/objects` + (this.$route.params.objectID == 'new' ? '' : `/${this.$route.params.objectID}`)
+
+                this.$api.post(route, this.object).then(resp => {
+                    this.$route.push(`/dashboard/models/${resp.data.model.id}`)
+                })
+            }
+        }
+    }
+</script>
