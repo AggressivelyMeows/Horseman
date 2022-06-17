@@ -5,13 +5,21 @@ export class Cache {
     async read(id, callback) {
         // fires callback if the object is not in the cache, putting the returned value into the cache in its place.
         let cache = caches.default
-        const req = new Request(`https://cache.com/${id}`)
+        const req = new Request(`https://ceru.dev/cache/${id}`)
 
         let res = await cache.match(req)
 
         if (!res) {
             log(`[CACHE] [${id}] MISS`)
-            const value = await callback()
+
+            let value
+
+            try {
+                value = await callback()
+            } catch (e) {
+                return null
+            }
+            
             res = value
 
             await this.write(
@@ -29,19 +37,14 @@ export class Cache {
 
     async write(id, data, opt) {
         const options = Object.assign(
-            { ttl: 600 },
+            {},
             opt
         )
 
         let cache = caches.default
-        const req = new Request(`https://cache.com/${id}`)
+        const req = new Request(`https://ceru.dev/cache/${id}`)
         const res = new Response(
-            JSON.stringify(data),
-            {
-                headers: {
-                    'Cache-Control': `s-maxage=${options.ttl}`
-                }
-            }
+            JSON.stringify(data)
         )
 
         await cache.put(req, res)
@@ -49,7 +52,11 @@ export class Cache {
 
     async delete(id) {
         let cache = caches.default
-        const req = new Request(`https://cache.com/${id}`)
+        const req = new Request(`https://ceru.dev/cache/${id}`)
+
+        //ctx.waitUntil(async () => {
+        await new Promise(r => setTimeout(r, 750))
         await cache.delete(req)
+        console.log(`[CACHE] Deleted ${id}`)
     }
 }

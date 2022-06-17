@@ -1,5 +1,4 @@
-import Router from '@tsndr/cloudflare-worker-router'
-
+import Router from './tsndr_router.js'
 import { Table } from './lib/table.js'
 
 const router = new Router()
@@ -51,14 +50,50 @@ router.requires_auth = async (req, res, next) => {
         user.authorization_type = 'key'
         user.key = key
     }
-
-
-    console.log(token, user)
     
     req.user = user
 
     await next()
 }
+
+router.get('/v1/clr-cache/:id', async (req, res) => {
+    const accounts = new Table(
+        'internal',
+        'accounts'
+    )
+
+    res.body = {
+        success: await accounts.cache.delete(req.params.id)
+    }
+})
+
+router.get('/v1/cache/:id', async (req, res) => {
+    const accounts = new Table(
+        'internal',
+        'accounts'
+    )
+
+    res.body = {
+        cache: await accounts.cache.read(req.params.id)
+    }
+})
+
+router.get('/v1/kv/read/:id', async (req, res) => {
+    res.body = {
+        obj: await env.CONTENTKV.get(req.params.id, { type: 'json' }),
+        idx: await env.INDEXKV.get(req.params.id, { type: 'json' })
+    }
+})
+
+
+router.get('/v1/kv/write', async (req, res) => {
+    const ts = new Date().toISOString()
+    await env.CONTENTKV.put('testing:kv:latency', JSON.stringify({ date: ts, colo_ray: req.headers.get('cf-ray') }))
+
+    res.body = {
+        ts
+    }
+})
 
 export {
     router

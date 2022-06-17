@@ -13,7 +13,7 @@
                 🔏 Your objects
             </b>
 
-            <router-link v-for="model in models" :to="`/dashboard/models/${model.id}/content`" class="button w-full bg-gray-850 text-gray-200 justify-start px-4 py-1.5" active-class="bg-gray-900 text-primary-400">
+            <router-link v-for="model in models" :to="`/dashboard/models/${model.id}/content`" class="button w-full bg-gray-850 text-gray-200 justify-start px-4 py-1.5 mb-2" active-class="bg-gray-900 text-primary-400">
                 {{model.id}}
             </router-link>
 

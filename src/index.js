@@ -9,6 +9,7 @@ import './init.js'
 
 export default {
     async fetch(request, env, ctx) {
+        globalThis.cloudflare = request.cf
         globalThis.env = env
         globalThis.ctx = ctx
 
@@ -39,6 +40,7 @@ export default {
             resp = await router.handle(request)
         } catch (e) {
             console.error(e.toString())
+            return new Response('internal server error', { status: 500 })
         }
 
         const response = new Response(resp.body, resp)

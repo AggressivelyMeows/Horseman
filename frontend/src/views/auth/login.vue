@@ -8,7 +8,7 @@
                 </o-field>
 
                 <o-field label="Password" class="mt-2">
-                    <o-input class="w-full" v-model="password"/>
+                    <o-input class="w-full" v-model="password" type="password"/>
                 </o-field>
 
                 <a class="button ~green @high mt-6 w-full" @click="login">
@@ -28,7 +28,8 @@
         methods: {
             login() {
                 this.$api.post(`/auth/login`, { email: this.email, password: this.password }).then(resp => {
-                    this.$api.authorize(resp.data.user.token) 
+                    this.$api.authorize(resp.data.user.token)
+                    this.$router.push('/dashboard/models')
                 })
             }
         },

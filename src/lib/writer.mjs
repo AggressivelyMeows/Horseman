@@ -24,7 +24,7 @@ export class WriterDO {
             const objectID = req.body.objectID
             const value = req.body.value
 
-            this.state.blockConcurrencyWhile(async () => {
+            const resp = await this.state.blockConcurrencyWhile(async () => {
                 // prefix should be userID:tablename:field
                 let idx = await this.env.INDEXKV.get(prefix + ':index', { type: 'json' })
 
@@ -47,7 +47,14 @@ export class WriterDO {
                 }
                 
                 await this.env.INDEXKV.put(prefix + ':index', JSON.stringify( idx ))
+
+                return idx
             })
+
+            res.body = {
+                success: true,
+                index: resp
+            }
         })
 
         router.post(`/v1/delete`, async (req, res) => {
@@ -55,7 +62,7 @@ export class WriterDO {
             const objectID = req.body.objectID
             const value = req.body.value
 
-            this.state.blockConcurrencyWhile(async () => {
+            await this.state.blockConcurrencyWhile(async () => {
                 // prefix should be userID:tablename:field
                 let idx = await this.env.INDEXKV.get(prefix + ':index', { type: 'json' })
 

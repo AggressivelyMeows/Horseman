@@ -52,20 +52,25 @@ export class Table {
     }
 
     async index_field(prefix, value, objectID) {
-        const durable = env.IndexWriter.get(env.IndexWriter.idFromName(prefix))
+        const durable = env.IndexWriter.get(env.IndexWriter.idFromName(`${cloudflare.colo}:${prefix}`))
 
-        await durable.fetch(
+        const new_index = await durable.fetch(
             `http://internal/v1/write`,
             {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prefix, value, objectID })
+                body: JSON.stringify({ prefix, value, objectID, ts: new Date().toISOString() })
             }
+        ).then(resp => resp.json())
+
+        await this.cache.write(
+            `${prefix}:index`,
+            new_index.index
         )
     }
 
     async delete_index(prefix, value, objectID) {
-        const durable = env.IndexWriter.get(env.IndexWriter.idFromName(prefix))
+        const durable = env.IndexWriter.get(env.IndexWriter.idFromName(`${cloudflare.colo}:${prefix}`))
 
         await durable.fetch(
             `http://internal/v1/delete`,
@@ -84,7 +89,7 @@ export class Table {
             // no need for an index
             return await this.cache.read(`${this.get_kv_prefix()}:${search}`, async () => {
                 increase_cost('read')
-                return await env.CONTENTKV.get(`${this.get_kv_prefix()}:${search}`, { type: 'json', cacheTtl: 86000 })
+                return await env.CONTENTKV.get(`${this.get_kv_prefix()}:${search}`, { type: 'json',  })
             })
         }
 
@@ -92,7 +97,7 @@ export class Table {
 
         const idx = await this.cache.read(key, async () => {
             increase_cost('read')
-            return await env.INDEXKV.get(key, { type: 'json', cacheTtl: 120 })
+            return await env.INDEXKV.get(key, { type: 'json' })
         })
 
         if ((!idx || !idx.length)) {
@@ -102,7 +107,7 @@ export class Table {
         const first = idx.find(x => x[0] == search)
 
         increase_cost('read')
-        return await env.CONTENTKV.get(`${this.get_kv_prefix()}:${first[1]}`, { type: 'json', cacheTtl: 86000 })
+        return await env.CONTENTKV.get(`${this.get_kv_prefix()}:${first[1]}`, { type: 'json',  })
     }
 
     async put(object, opt) {
@@ -127,17 +132,20 @@ export class Table {
         
         const cache_clears = []
 
-        await Promise.all(this.spec.map(field => {
+        await Promise.all(this.spec.map(async field => {
             if (field.index) {
-                cache_clears.push(this.cache.delete(`${this.get_kv_prefix()}:${field.name}:index`))
-
                 increase_cost('write')
-                return this.index_field(
+                await this.cache.delete(`${this.get_kv_prefix()}:${field.name}:index`)
+
+                const data = await this.index_field(
                     // prefix should be userID:tablename:field
                     `${this.get_kv_prefix()}:${field.name}`,
                     object[field.name],
                     object.id
                 )
+
+                
+                return data
             } else {
                 return Promise.resolve(null)
             }
@@ -173,22 +181,24 @@ export class Table {
         
         const cache_clears = []
 
-        await Promise.all(this.spec.map(field => {
+        await Promise.all(this.spec.map(async field => {
             if (field.index) {
                 if (existing[field.name] != object[field.name]) {
-                    cache_clears.push(this.cache.delete(`${this.get_kv_prefix()}:${field.name}:index`))
-
                     increase_cost('write')
-                    return this.index_field(
+                    const data = await this.index_field(
                         // prefix should be userID:tablename:field
                         `${this.get_kv_prefix()}:${field.name}`,
                         object[field.name],
                         object.id
                     )
+
+                    await this.cache.delete(`${this.get_kv_prefix()}:${field.name}:index`)
+
+                    return data
                 }
             }
 
-            return Promise.resolve(null)
+            return 
         }))
 
         await Promise.all(cache_clears)
@@ -237,7 +247,7 @@ export class Table {
 
         const idx = await this.cache.read(key, async () => {
             increase_cost('read')
-            return await env.INDEXKV.get(key, { type: 'json', cacheTtl: 120 })
+            return await env.INDEXKV.get(key, { type: 'json' })
         })
 
         if (!idx) {

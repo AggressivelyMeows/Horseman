@@ -7,7 +7,7 @@
                     <o-input class="w-full" v-model="email"/>
                 </o-field>
                 <o-field label="Password" class="mt-4">
-                    <o-input class="w-full" v-model="password"/>
+                    <o-input class="w-full" v-model="password" type="password"/>
                 </o-field>
 
                 <a class="button ~primary @high mt-8 w-full" @click="create_account">
@@ -27,7 +27,8 @@
         methods: {
             create_account() {
                 this.$api.post(`/auth/signup`, { email: this.email, password: this.password }).then(resp => {
-                    console.log(resp)
+                    this.$api.authorize(resp.data.account.token)
+                    this.$router.push('/dashboard/models')
                 })
             }
         },
