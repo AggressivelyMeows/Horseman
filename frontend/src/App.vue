@@ -37,7 +37,7 @@
             <router-view />
         </main>
 
-        <notifications position="bottom right" classes="notif" speed="300" duration="4000" />
+        <notifications position="bottom right" classes="notif" />
         
     </div>
 </template>

@@ -72,10 +72,17 @@ export default class API {
     }
 
     error_notification(error_response) {
-        notify({
-            title: `We're sorry, there was an error`,
-            text: `${error_response.response.status} - ${error_response.response.data.error}`,
-            type: 'error'
-        })
+        if ('response' in error_response) {
+            notify({
+                title: `We're sorry, there was an error`,
+                text: `${error_response.response.status} - ${error_response.response.data.error}`,
+                type: 'error'
+            })
+        } else {
+            throw error_response
+        }
+
+
+
     }
 }

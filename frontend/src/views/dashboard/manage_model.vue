@@ -55,6 +55,7 @@
                                 <option value="string">Short text</option>
                                 <option value="markdown">Markdown</option>
                                 <option value="dropdown">Dropdown</option>
+                                <option value="tag">Tag insert</option>
                             </o-select>
                         </o-field>
 
@@ -80,11 +81,11 @@
                         <o-inputitems v-model="element.args.options" placeholder="Add an item" aria-close-label="Delete this item"></o-inputitems>
                     </div>
 
-                    <div class="mt-2">
+                    <div class="mt-2" v-if="element.type == 'string'">
                         <o-checkbox v-model="model.options.title_field" :trueValue="element.name" false-value="">This field is the model's title</o-checkbox>
                     </div>
 
-                    <div class="mt-2" v-if="model.id == 'new'">
+                    <div class="mt-2" v-if="model.id == 'new' && element.type == 'string'">
                         <o-checkbox v-model="element.index">Indexable</o-checkbox>
                     </div>
 

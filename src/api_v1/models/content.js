@@ -16,6 +16,8 @@ router.get(router.version + '/models/:modelID/objects', router.requires_auth, as
 
     const spec = await tbl.get_spec()
 
+    console.log(spec)
+
     const target = Object.keys(req.query).find(q => spec.map(x => x.name).includes(q))
 
     if (target) {

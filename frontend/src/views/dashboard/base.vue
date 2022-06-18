@@ -1,6 +1,6 @@
 <template>
     <div class="grid grid-cols-12 gap-4" >
-        <div class="col-span-12 md:col-span-3 mt-4 text-gray-200 space-y-4">
+        <div class="col-span-12 md:col-span-3 mt-4 text-gray-200 space-y-2">
             <b class="text-gray-200  block px-2">
                 💽 Your data
             </b>

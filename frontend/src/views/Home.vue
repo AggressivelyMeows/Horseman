@@ -1,27 +1,33 @@
 <template>
-    <div class="relative py-24 bg-cover bg-top">
-        <div class="relative z-10">
-            <h4 class="text-4xl font-extrabold text-gray-600">
-                Ok, but what if headless CMS<br/>
-                But at the edge?? 🤔
-            </h4>
-            <h4 class="text-4xl font-extrabold text-primary-500">
-                Horseman, the headless CMS.
-            </h4>
-            <div class="mt-4 text-gray-400 font-medium text-lg">
-                <p>
-                    Powered by Cloudflare Workers & KV, solely.<br/>Batteries included.
-                </p>
+    <div class=" py-24 bg-cover bg-top overflow-hidden">
+
+        <div class="flex flex-row items-center">
+            <div class="relative z-10 flex-grow">
+                <h4 class="text-4xl font-extrabold text-gray-600">
+                    Ok, but what if headless CMS<br/>
+                    But at the edge?? 🤔
+                </h4>
+                <h4 class="text-4xl font-extrabold text-primary-500">
+                    Horseman, the headless CMS.
+                </h4>
+                <div class="mt-4 text-gray-400 font-medium text-lg">
+                    <p>
+                        Powered by Cloudflare Workers & KV, solely.<br/>Batteries included.
+                    </p>
+                </div>
             </div>
+
+            <canvas :style="{ width: '45rem', height: '45rem' }" class="hidden md:block absolute right-0 top-[4em] z-[0]" ref="el" id="cobe"></canvas>
         </div>
-        <div class="mt-24">
+
+        <div class="mt-24 z-10 block relative">
             <h4 class="text-primary-500 text-2xl font-extrabold inline">
                 Updates & news.
             </h4>
             <h5 class="text-gray-600 text-2xl font-extrabold inline">Powered by Horseman, click <a class="underline" target="_blank" href="https://horseman.ceru.dev/v1/models/news/objects?key=1uI0jPRNuMgM">here</a> to see.</h5>
         </div>
 
-        <div class="divide-y-2 divide-gray-200">
+        <div class="divide-y-2 divide-gray-200 z-10 relative">
             <div class="mt-2 pt-8 grid gap-16 lg:grid-cols-2 lg:gap-x-5 lg:gap-y-12">
                 <div v-for="article in news">
                     <p class="text-sm text-gray-500">
@@ -48,11 +54,44 @@
 </template>
 
 <script>
+    import createGlobe from 'cobe';
+
     export default {
         data: () => ({
-            news: []
+            news: [],
+            phi: 0,
         }),
         mounted() {
+            console.log(this.$refs.el)
+            this.$nextTick(() => {
+                let canvas = document.getElementById("cobe");
+                let phi = 0;
+
+                const globe = createGlobe(canvas, {
+                    devicePixelRatio: 2,
+                    width: 720 * 2,
+                    height: 720 * 2,
+                    phi: 0,
+                    theta: 0,
+                    dark: 1,
+                    diffuse: 1.2,
+                    mapSamples: 16000,
+                    mapBrightness: 4,
+                    baseColor: [0.3, 0.3, 0.3],
+                    markerColor: [0.1, 0.8, 1],
+                    glowColor: [0.2, 0.2, 0.2],
+                    markers: [
+                    ],
+                    onRender: (state) => {
+                        // Called on every animation frame.
+                        // `state` will be an empty object, return updated params.
+                        state.phi = phi;
+                        phi += 0.003;
+                    }
+                });
+
+            })
+
             fetch('https://horseman.ceru.dev/v1/models/news/objects?key=1uI0jPRNuMgM').then(resp => resp.json()).then(data => {
                 this.news = data.results
             })

@@ -15,22 +15,21 @@
 
         <div class="mt-4 space-y-4 divide-y divide-gray-800">
             <div v-for="element, idx in model.spec" class="">
-                <o-field v-if="element.type == 'string'" :label="element.name" :message="element.help" class="mt-2 flex-grow">
+                <o-field :label="element.name" :message="element.help" class="mt-2 flex-grow">
                     <input
+                        v-if="element.type == 'string'"
                         v-model="object[element.name]"
                         class="w-full rounded-md bg-gray-800 text-sm px-2 py-2 border-none border-gray-700 focus:outline-none focus:border-primary-900 focus:ring-primary-600 focus:ring-1"
                         :placeholder="`${element.name}`"
                     />
-                </o-field>
 
-                <o-field v-if="element.type == 'markdown'" :label="element.name" :message="element.help" class="mt-2 flex-grow">
-                    <textarea v-model="object[element.name]" :placeholder="`${element.name}`" textarea class="w-full rounded-md bg-gray-800 text-sm px-2 py-2 border-none border-gray-700 focus:outline-none focus:border-primary-900 focus:ring-primary-600 focus:ring-1"/>
-                </o-field>
+                    <textarea v-if="element.type == 'markdown'" v-model="object[element.name]" :placeholder="`${element.name}`" textarea class="w-full rounded-md bg-gray-800 text-sm px-2 py-2 border-none border-gray-700 focus:outline-none focus:border-primary-900 focus:ring-primary-600 focus:ring-1"/>
 
-                <o-field v-if="element.type == 'dropdown'" :label="element.name" :message="element.help" class="mt-2 flex-grow">
-                    <o-select :placeholder="`${element.name}`" v-model="object[element.name]">
+                    <o-select v-if="element.type == 'dropdown'" :placeholder="`${element.name}`" v-model="object[element.name]">
                         <option class="text-gray-200" :value="v" v-for="v in element.args.options">{{v}}</option>
                     </o-select>
+
+                    <o-inputitems expanded v-if="element.type == 'tag'" v-model="object[element.name]" placeholder="Add an item" aria-close-label="Delete this item"></o-inputitems>
                 </o-field>
             </div>
         </div>
@@ -73,7 +72,8 @@
                             this.object[field.name] = {
                                 string: '',
                                 markdown: '',
-                                dropdown: ''
+                                dropdown: '',
+                                tag: []
                             }[field.type]
                         })
                     } else {
@@ -126,7 +126,7 @@
                         type: 'success',
                     })
 
-                    this.$route.push(`/dashboard/models/${resp.data.model.id}`)
+                    this.$router.push(`/dashboard/models/${this.$route.params.modelID}/objects`)
                 }).catch(e => this.$api.error_notification(e))
             }
         }

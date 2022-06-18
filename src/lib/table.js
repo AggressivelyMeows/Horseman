@@ -42,6 +42,7 @@ export class Table {
             increase_cost('read')
             return await env.INDEXKV.get(`${this.get_kv_prefix()}:spec`, { type: 'json' })
         })
+        
 
         this.spec = spec
         return spec
