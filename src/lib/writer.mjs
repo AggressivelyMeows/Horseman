@@ -61,7 +61,7 @@ export class WriterDO {
             const prefix = req.body.prefix
             const objectID = req.body.objectID
 
-            await this.state.blockConcurrencyWhile(async () => {
+            const index = await this.state.blockConcurrencyWhile(async () => {
                 // prefix should be userID:tablename:field
                 let idx = await this.env.INDEXKV.get(prefix + ':index', { type: 'json' })
 
@@ -75,7 +75,8 @@ export class WriterDO {
             })
 
             res.body = {
-                success: true
+                success: true,
+                index
             }
         })
 

@@ -75,7 +75,7 @@ export class Table {
     async delete_index(prefix, objectID) {
         const durable = env.IndexWriter.get(env.IndexWriter.idFromName(`${prefix}`))
 
-        return await durable.fetch(
+        const new_index = await durable.fetch(
             `http://internal/v1/delete`,
             {
                 method: 'POST',
@@ -83,6 +83,11 @@ export class Table {
                 body: JSON.stringify({ prefix, objectID })
             }
         ).then(resp => resp.json())
+
+        await this.cache.write(
+            `${prefix}:index`,
+            new_index.index
+        )
     }
 
     async get(index, search) {
@@ -218,13 +223,15 @@ export class Table {
         await Promise.all(this.spec.map(async field => {
             if (field.index) {
                 increase_cost('write')
-                await this.cache.delete(`${this.get_kv_prefix()}:${field.name}:index`)
+                
 
                 const data = await this.delete_index(
                     // prefix should be userID:tablename:field
                     `${this.get_kv_prefix()}:${field.name}`,
                     objectID
                 )
+
+                await this.cache.delete(`${this.get_kv_prefix()}:${field.name}:index`)
 
                 return data
             } else {

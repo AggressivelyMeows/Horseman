@@ -33,7 +33,7 @@
                 </div>
             </div>
         </header>
-        <main :class="`${ $route.path == '/' ? '' : 'container mx-auto px-4 pt-4' }`">
+        <main :class="`${ false ? '' : 'container mx-auto px-4 pt-4' }`">
             <router-view />
         </main>
 

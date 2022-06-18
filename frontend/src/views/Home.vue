@@ -1,6 +1,6 @@
 <template>
     <div class="relative py-24 bg-cover bg-top">
-        <div class="relative z-10 container mx-auto px-4 pt-4">
+        <div class="relative z-10">
             <h4 class="text-4xl font-extrabold text-gray-600">
                 Ok, but what if headless CMS<br/>
                 But at the edge?? 🤔
@@ -14,8 +14,51 @@
                 </p>
             </div>
         </div>
+        <div class="mt-24">
+            <h4 class="text-primary-500 text-2xl font-extrabold inline">
+                Updates & news.
+            </h4>
+            <h5 class="text-gray-600 text-2xl font-extrabold inline">Powered by Horseman, click <a class="underline" target="_blank" href="https://horseman.ceru.dev/v1/models/news/objects?key=1uI0jPRNuMgM">here</a> to see.</h5>
+        </div>
+
+        <div class="divide-y-2 divide-gray-200">
+            <div class="mt-2 pt-8 grid gap-16 lg:grid-cols-2 lg:gap-x-5 lg:gap-y-12">
+                <div v-for="article in news">
+                    <p class="text-sm text-gray-500">
+                        <time datetime="2020-03-16">{{new Date(article.metadata.created_at).toLocaleDateString()}}</time>
+                    </p>
+                    <a class="mt-2 block">
+                        <p class="text-xl font-semibold text-gray-200">
+                            {{article.Title}}
+                        </p>
+                        <p class="mt-3 text-base text-gray-500">
+                            {{article.Content}}
+                        </p>
+                    </a>
+                    <div class="mt-3">
+                        <a href="#" class="text-base font-semibold text-primary-600 hover:text-primary-500">
+                            Read full story (coming soon)
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </template>
+
+<script>
+    export default {
+        data: () => ({
+            news: []
+        }),
+        mounted() {
+            fetch('https://horseman.ceru.dev/v1/models/news/objects?key=1uI0jPRNuMgM').then(resp => resp.json()).then(data => {
+                this.news = data.results
+            })
+        }
+    }
+</script>
 
 <style scoped>
 .vimeo-wrapper {
