@@ -26,13 +26,13 @@ export default {
         }
 
         globalThis.log = (l) => {
+            console.log(l)
             log.push(l)
         }
 
-        if (!globalThis.MINIFLARE) {
-            router.corsConfig.allowOrigin = 'https://wordful.ceru.dev'
-            router.corsConfig.allowHeaders = 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-        }
+        
+        router.corsConfig.allowOrigin = '*'
+        router.corsConfig.allowHeaders = 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Content-Length, x-cost, x-log'
 
         let resp
 
@@ -47,6 +47,8 @@ export default {
 
         response.headers.set('X-Cost', JSON.stringify(cost))
         response.headers.set('X-Log', JSON.stringify(log))
+
+        response.headers.set('Access-Control-Expose-Headers', router.corsConfig.allowHeaders)
 
         return response
     }

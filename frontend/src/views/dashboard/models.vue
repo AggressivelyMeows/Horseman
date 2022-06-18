@@ -52,7 +52,7 @@
         methods: {
             init() {
                 this.loading = true
-                this.$api.get('/models/@me').then(resp => {
+                this.$api.get('/models').then(resp => {
                     this.models = resp.data.results
                 }).finally(() => this.loading = false)
             },

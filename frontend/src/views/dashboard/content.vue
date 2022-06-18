@@ -16,7 +16,7 @@
         <div class="rounded-md bg-primary-600 text-gray-200 font-medium px-4 py-2 text-sm mb-4">
             Access your data via the API by visiting this URL:
             <br/>
-            https://horseman.ceru.dev/v1/models/{{model.id}}/objects?key={{(keys[0] || {}).id}}
+            {{ $api.api_url }}/models/{{model.id}}/objects?key={{(keys[0] || {}).id}}
         </div>
 
         <div v-if="loading">
@@ -71,6 +71,11 @@
             random_gradient(name) {
                 return gradient(name)
             },
+        },
+        watch: {
+            $route() {
+                this.init()
+            }
         },
         data: () => ({
             loading: false,

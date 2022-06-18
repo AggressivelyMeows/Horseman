@@ -44,7 +44,10 @@ export class Cache {
         let cache = caches.default
         const req = new Request(`https://ceru.dev/cache/${id}`)
         const res = new Response(
-            JSON.stringify(data)
+            JSON.stringify(data),
+            {
+                headers: {'Cache-Control': 'max-age=860000'}
+            }
         )
 
         await cache.put(req, res)

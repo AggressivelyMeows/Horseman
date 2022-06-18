@@ -5,8 +5,11 @@
                 {{ $route.params.objectID == 'new' ? 'Creating' : 'Editing' }} {{model.id}}
             </h4>
 
+            <a class="button ~red @high mr-2" @click="del_object" v-if="$route.params.objectID != 'new'">
+                Delete
+            </a>
             <a class="button ~green @high" @click="save">
-                Save
+                {{ $route.params.objectID == 'new' ? 'Create' : 'Save' }}
             </a>
         </div>
 
@@ -62,7 +65,7 @@
             if (this.$route.params.modelID) {
                 // load model from API
 
-                this.$api.get(`/models/@me/${this.$route.params.modelID}`).then(resp => {
+                this.$api.get(`/models/${this.$route.params.modelID}`).then(resp => {
                     this.model = resp.data.model
 
                     if (this.$route.params.objectID == 'new') {
@@ -102,12 +105,29 @@
                     args: {}
                 })
             },
+            del_object() {
+                this.$api.delete(`/models/${this.model.id}/objects/${this.$route.params.objectID}`).then(resp => {
+                    this.$notify({
+                        title: 'Object deleted',
+                        text: 'Due to caching, this object may remain avalible via the API for up to 30 minutes, however we promise its deleted from our systems.',
+                        type: 'success',
+                    })
+
+                    this.$route.push(`/dashboard/models/${this.model.id}/content`)
+                }).catch(e => this.$api.error_notification(e))
+            },
             save() {
                 const route = `/models/${this.model.id}/objects` + (this.$route.params.objectID == 'new' ? '' : `/${this.$route.params.objectID}`)
 
                 this.$api.post(route, this.object).then(resp => {
+                    this.$notify({
+                        title: 'Object saved',
+                        text: 'This object was saved successfully',
+                        type: 'success',
+                    })
+
                     this.$route.push(`/dashboard/models/${resp.data.model.id}`)
-                })
+                }).catch(e => this.$api.error_notification(e))
             }
         }
     }

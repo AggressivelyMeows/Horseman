@@ -60,16 +60,23 @@ export class WriterDO {
         router.post(`/v1/delete`, async (req, res) => {
             const prefix = req.body.prefix
             const objectID = req.body.objectID
-            const value = req.body.value
 
             await this.state.blockConcurrencyWhile(async () => {
                 // prefix should be userID:tablename:field
                 let idx = await this.env.INDEXKV.get(prefix + ':index', { type: 'json' })
 
                 idx = idx.filter(x => x[1] != objectID)
-                
-                await this.env.INDEXKV.put(prefix + ':index', JSON.stringify( idx ))
+
+                if (idx.length == 0) {
+                    await this.env.INDEXKV.delete(prefix + ':index')
+                } else {
+                    await this.env.INDEXKV.put(prefix + ':index', JSON.stringify( idx ))
+                }
             })
+
+            res.body = {
+                success: true
+            }
         })
 
         return await router.handle(req)

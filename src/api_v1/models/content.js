@@ -3,6 +3,7 @@ import { Table } from '../../lib/table.js'
 
 import slugify from 'slugify'
 
+// LIST OBJECT
 router.get(router.version + '/models/:modelID/objects', router.requires_auth, async (req, res) => {
     const tbl = new Table(
         req.user.id,
@@ -59,6 +60,7 @@ router.get(router.version + '/models/:modelID/objects', router.requires_auth, as
     }
 })
 
+// GET OBJECT
 router.get(router.version + '/models/:modelID/objects/:objectID', router.requires_auth, async (req, res) => {
     const tbl = new Table(
         req.user.id,
@@ -78,6 +80,7 @@ router.get(router.version + '/models/:modelID/objects/:objectID', router.require
     }
 })
 
+// CREATE A NEW OBJECT
 router.post(router.version + '/models/:modelID/objects', router.requires_auth, async (req, res) => {
     const tbl = new Table(
         req.user.id,
@@ -99,7 +102,7 @@ router.post(router.version + '/models/:modelID/objects', router.requires_auth, a
     }
 })
 
-// UPDATE a model
+// UPDATE AN OBJECT
 router.post(router.version + '/models/:modelID/objects/:objectID', router.requires_auth, async (req, res) => {
     // create a new model
     const tbl = new Table(
@@ -107,16 +110,26 @@ router.post(router.version + '/models/:modelID/objects/:objectID', router.requir
         req.params.modelID
     )
 
-    const existing = await tbl.get(
-        'id',
-        req.params.modelID
-    )
-
-    req.body.__all_objects_index = 0
-
     await tbl.update(
         req.params.objectID,
         req.body
+    )
+
+    res.body = {
+        success: true
+    }
+})
+
+// DELETE AN OBJECT
+router.delete(router.version + '/models/:modelID/objects/:objectID', router.requires_auth, async (req, res) => {
+    // create a new model
+    const tbl = new Table(
+        req.user.id,
+        req.params.modelID
+    )
+
+    await tbl.delete(
+        req.params.objectID
     )
 
     res.body = {

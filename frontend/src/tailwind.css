@@ -61,3 +61,27 @@
 .o-chk__label {
     @apply ml-2 text-sm
 }
+
+.notif {
+    @apply p-2 px-3 rounded-md mb-3 mr-3 cursor-pointer
+}
+
+.notif.success {
+    @apply text-gray-200 bg-green-600
+}
+
+.notif.warning {
+    @apply text-gray-200 bg-yellow-600
+}
+
+.notif.error {
+    @apply text-gray-200 bg-red-600
+}
+
+.notif.info {
+    @apply text-gray-200 bg-blue-600
+}
+
+.notification-content {
+    @apply text-sm
+}

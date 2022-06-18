@@ -5,6 +5,9 @@
                 {{ model.id == 'new' ? 'Creating' : 'Editing' }} {{model.id == 'new' ? 'new model' : model.id}}
             </h4>
 
+            <a class="button ~red @high mr-2" @click="del_model" v-if="$route.params.modelID != 'new'">
+                Delete
+            </a>
             <a class="button ~green @high" @click="save">
                 Save
             </a>
@@ -78,7 +81,7 @@
                     </div>
 
                     <div class="mt-2">
-                        <o-checkbox v-model="model.options.title_field" :trueValue="element.name" false-value="">This field is the object's title</o-checkbox>
+                        <o-checkbox v-model="model.options.title_field" :trueValue="element.name" false-value="">This field is the model's title</o-checkbox>
                     </div>
 
                     <div class="mt-2" v-if="model.id == 'new'">
@@ -133,7 +136,7 @@
             if (this.$route.params.modelID) {
                 // load model from API
 
-                this.$api.get(`/models/@me/${this.$route.params.modelID}`).then(resp => {
+                this.$api.get(`/models/${this.$route.params.modelID}`).then(resp => {
                     this.model = resp.data.model
 
                     this.uneditable_fields = this.model.spec.map(field => field.name)
@@ -161,11 +164,30 @@
                     args: {}
                 })
             },
+            del_model() {
+                this.$api.delete(`/models/${this.model.id}`).then(resp => {
+                    this.$notify({
+                        title: 'Model deleted',
+                        text: 'Due to caching, this model may remain avalible via the API for up to 30 minutes, however we promise its deleted from our systems.',
+                        type: 'success',
+                    })
+
+                    this.$router.push(`/dashboard/models`)
+                }).catch(e => this.$api.error_notification(e))
+            },
             save() {
-                const route = `/models/@me${ this.$route.params.modelID != 'new' ? '/' + this.$route.params.modelID : '' }`
+                const route = `/models${ this.$route.params.modelID != 'new' ? '/' + this.$route.params.modelID : '' }`
 
                 this.$api.post(route, this.model).then(resp => {
-                    this.$router.push(`/dashboard/models/${resp.data.model.id}`)
+                    this.$router.push(`/dashboard/models`)
+
+                    this.$notify({
+                        title: 'Model saved',
+                        text: 'This model was saved successfully',
+                        type: 'success',
+                    })
+
+                    this.$api.events.emit('dashboard:reset')
                 })
             }
         }

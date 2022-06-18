@@ -52,7 +52,7 @@ export class Table {
     }
 
     async index_field(prefix, value, objectID) {
-        const durable = env.IndexWriter.get(env.IndexWriter.idFromName(`${cloudflare.colo}:${prefix}`))
+        const durable = env.IndexWriter.get(env.IndexWriter.idFromName(`${prefix}`))
 
         const new_index = await durable.fetch(
             `http://internal/v1/write`,
@@ -63,28 +63,29 @@ export class Table {
             }
         ).then(resp => resp.json())
 
+        // If the DO is in a different location, such as if the colo cannot make DOs,
+        // then the KV propagation will be extremely slow.
+        // we "abuse" the Cache API to act as a pseudo KV solution to allow for instant KV propagation to the colo
         await this.cache.write(
             `${prefix}:index`,
             new_index.index
         )
     }
 
-    async delete_index(prefix, value, objectID) {
-        const durable = env.IndexWriter.get(env.IndexWriter.idFromName(`${cloudflare.colo}:${prefix}`))
+    async delete_index(prefix, objectID) {
+        const durable = env.IndexWriter.get(env.IndexWriter.idFromName(`${prefix}`))
 
-        await durable.fetch(
+        return await durable.fetch(
             `http://internal/v1/delete`,
             {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prefix, value, objectID })
+                body: JSON.stringify({ prefix, objectID })
             }
-        )
+        ).then(resp => resp.json())
     }
 
     async get(index, search) {
-        console.log(`[read:${this.get_kv_prefix()}] ${index} : ${search}`)
-
         if (index == 'id') {
             // no need for an index
             return await this.cache.read(`${this.get_kv_prefix()}:${search}`, async () => {
@@ -106,13 +107,13 @@ export class Table {
 
         const first = idx.find(x => x[0] == search)
 
-        increase_cost('read')
-        return await env.CONTENTKV.get(`${this.get_kv_prefix()}:${first[1]}`, { type: 'json',  })
+        return await this.cache.read(`${this.get_kv_prefix()}:${first[1]}`, async () => {
+            increase_cost('read')
+            return await env.CONTENTKV.get(`${this.get_kv_prefix()}:${first[1]}`, { type: 'json' })
+        })
     }
 
     async put(object, opt) {
-        console.log(`[write:${this.get_kv_prefix()}]`, object)
-        
         const options = Object.assign({
             update_indexes: true // disable if this is an update operation where the indexed fields dont get changed
         }, opt)
@@ -144,7 +145,6 @@ export class Table {
                     object.id
                 )
 
-                
                 return data
             } else {
                 return Promise.resolve(null)
@@ -158,7 +158,6 @@ export class Table {
     }
 
     async update(existingID, modifications) {
-        console.log(existingID, modifications)
         await this.get_spec()
 
         const existing = await this.get(
@@ -170,8 +169,6 @@ export class Table {
             existing,
             modifications
         )
-
-        console.log(existingID, object)
 
         const objectID = `${this.get_kv_prefix()}:${object.id}`
 
@@ -204,7 +201,7 @@ export class Table {
         await Promise.all(cache_clears)
 
         // clear cache of existing IDX
-        
+        await this.cache.delete(`${this.get_kv_prefix()}:${existingID}`)
 
         return object
     }
@@ -218,21 +215,24 @@ export class Table {
         increase_cost('write')
         await env.CONTENTKV.delete(key)
 
-        await Promise.all(Object.keys(this.spec).map(k => {
-            const field = this.spec[k]
-
+        await Promise.all(this.spec.map(async field => {
             if (field.index) {
                 increase_cost('write')
-                return this.delete_index(
+                await this.cache.delete(`${this.get_kv_prefix()}:${field.name}:index`)
+
+                const data = await this.delete_index(
                     // prefix should be userID:tablename:field
-                    `${this.get_kv_prefix()}:${k}`,
-                    object[k],
-                    id
+                    `${this.get_kv_prefix()}:${field.name}`,
+                    objectID
                 )
+
+                return data
             } else {
                 return Promise.resolve(null)
             }
         }))
+
+        await this.cache.delete(`${this.get_kv_prefix()}:${objectID}`)
 
         return true
     }

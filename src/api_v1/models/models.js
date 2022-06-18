@@ -3,7 +3,7 @@ import { Table } from '../../lib/table.js'
 
 import slugify from 'slugify'
 
-router.get(router.version + '/models/@me', router.requires_auth, async (req, res) => {
+router.get(router.version + '/models', router.requires_auth, async (req, res) => {
     const tbl = new Table(
         req.user.id,
         'models'
@@ -24,7 +24,7 @@ router.get(router.version + '/models/@me', router.requires_auth, async (req, res
     }
 })
 
-router.get(router.version + '/models/@me/:modelID', router.requires_auth, async (req, res) => {
+router.get(router.version + '/models/:modelID', router.requires_auth, async (req, res) => {
     const tbl = new Table(
         req.user.id,
         'models'
@@ -57,7 +57,7 @@ router.get(router.version + '/models/@me/:modelID', router.requires_auth, async 
     }
 })
 
-router.post(router.version + '/models/@me', router.requires_auth, async (req, res) => {
+router.post(router.version + '/models', router.requires_auth, async (req, res) => {
     // create a new model
     const tbl = new Table(
         req.user.id,
@@ -102,7 +102,7 @@ router.post(router.version + '/models/@me', router.requires_auth, async (req, re
 })
 
 // UPDATE a model
-router.post(router.version + '/models/@me/:modelID', router.requires_auth, async (req, res) => {
+router.post(router.version + '/models/:modelID', router.requires_auth, async (req, res) => {
     // create a new model
     const tbl = new Table(
         req.user.id,
@@ -144,6 +144,42 @@ router.post(router.version + '/models/@me/:modelID', router.requires_auth, async
     )
 
     await model_table.set_spec(spec)
+
+    res.body = {
+        success: true
+    }
+})
+
+// DELETE A MODEL
+router.delete(router.version + '/models/:modelID', router.requires_auth, async (req, res) => {
+    // create a new model
+    const tbl = new Table(
+        req.user.id,
+        req.params.modelID
+    )
+
+    const idx_keys = (
+        await env.INDEXKV.list({
+            prefix: tbl.get_kv_prefix()
+        })
+    ).keys.map(k => k.name)
+
+    const object_keys = (
+        await env.CONTENTKV.list({
+            prefix: tbl.get_kv_prefix()
+        })
+    ).keys.map(k => k.name)
+
+    console.log(idx_keys, object_keys)
+
+    await Promise.all([
+        Promise.all(idx_keys.map(k => env.INDEXKV.delete(k))),
+        Promise.all(object_keys.map(k => env.CONTENTKV.delete(k))),
+    ])
+
+    await new Table(req.user.id, 'models').delete(
+        req.params.modelID
+    )
 
     res.body = {
         success: true
