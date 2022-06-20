@@ -1,4 +1,5 @@
 import { nanoid } from 'nanoid'
+import wcmatch from 'wildcard-match'
 import { Cache } from './cache.js'
 
 export class Table { 
@@ -262,9 +263,23 @@ export class Table {
             return []
         }
 
+        let is_match
+
+        if (typeof search == 'string') {
+            is_match = wcmatch(search.toLowerCase())
+        }
+
+        const is_valid_object = (obj) => {
+            if (typeof obj[0] == 'string') {
+                return is_match(obj[0].toLowerCase())
+            }
+
+            return obj[0] == search
+        }
+
         // idx is listed newest last
         const arg = options.limit - ( options.order == 'oldest_first' ? 0 : options.limit * 2 )
-        let objects = idx.filter(obj => obj[0] == search).splice(arg)
+        let objects = idx.filter(obj => is_valid_object(obj)).splice(arg)
 
         if (options.order == 'newest_first') {
             objects = objects.reverse()

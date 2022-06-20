@@ -52,6 +52,7 @@ router.requires_auth = async (req, res, next) => {
     }
     
     req.user = user
+    
 
     await next()
 }

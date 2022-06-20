@@ -24,7 +24,6 @@
             <h4 class="text-primary-500 text-2xl font-extrabold inline">
                 Updates & news.
             </h4>
-            <h5 class="text-gray-600 text-2xl font-extrabold inline">Powered by Horseman, click <a class="underline" target="_blank" href="https://horseman.ceru.dev/v1/models/news/objects?key=1uI0jPRNuMgM">here</a> to see.</h5>
         </div>
 
         <div class="divide-y-2 divide-gray-200 z-10 relative">
@@ -37,8 +36,7 @@
                         <p class="text-xl font-semibold text-gray-200">
                             {{article.Title}}
                         </p>
-                        <p class="mt-3 text-base text-gray-500">
-                            {{article.Content}}
+                        <p class="mt-3 text-base text-gray-500" v-html="$api.marked.parse(article.Content.substring(0, 150) + '...')">
                         </p>
                     </a>
                     <div class="mt-3">
@@ -62,7 +60,6 @@
             phi: 0,
         }),
         mounted() {
-            console.log(this.$refs.el)
             this.$nextTick(() => {
                 let canvas = document.getElementById("cobe");
                 let phi = 0;
@@ -86,7 +83,7 @@
                         // Called on every animation frame.
                         // `state` will be an empty object, return updated params.
                         state.phi = phi;
-                        phi += 0.003;
+                        phi += 0.001;
                     }
                 });
 

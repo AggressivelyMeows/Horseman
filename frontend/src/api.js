@@ -2,11 +2,12 @@ import axios from 'axios'
 import { reactive } from 'vue'
 import { createNanoEvents } from 'nanoevents'
 import { notify } from "@kyvg/vue3-notification"
+import * as marked from 'marked'
 
 export default class API {
     constructor () {
         this.user_token = localStorage.token || ''
-        this.axios = this.create_axios()
+        
         this.state = reactive({
             reads: 0,
             writes: 0,
@@ -16,6 +17,9 @@ export default class API {
         this.api_url = `https://${ import.meta.env.PROD ? 'horseman.ceru.dev' : 'api-dev.constellations.tech' }/v1`
 
         this.events = createNanoEvents()
+        this.marked = marked
+
+        this.axios = this.create_axios()
 
         if (this.user_token) {
             this.authorize(this.user_token)

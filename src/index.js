@@ -50,6 +50,11 @@ export default {
 
         response.headers.set('Access-Control-Expose-Headers', router.corsConfig.allowHeaders)
 
+        const task = async () => {
+
+        }
+        
+
         return response
     }
 }

@@ -12,6 +12,7 @@
     "a17t": "^0.10.1",
     "axios": "^0.27.2",
     "cobe": "^0.5.0",
+    "marked": "^4.0.17",
     "nanoevents": "^7.0.1",
     "random-gradient": "0.0.2",
     "slugify": "^1.6.5",
