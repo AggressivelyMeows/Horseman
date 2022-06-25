@@ -5,6 +5,7 @@ export { WriterDO } from './lib/writer.mjs'
 import './api_v1/auth/accounts.js'
 import './api_v1/models/models.js'
 import './api_v1/models/content.js'
+// import './api_v1/models/graphql.js'
 import './init.js'
 
 export default {
@@ -49,11 +50,6 @@ export default {
         response.headers.set('X-Log', JSON.stringify(log))
 
         response.headers.set('Access-Control-Expose-Headers', router.corsConfig.allowHeaders)
-
-        const task = async () => {
-
-        }
-        
 
         return response
     }

@@ -2,6 +2,7 @@ import { router } from '../../router.js'
 import { Table } from '../../lib/table.js'
 
 import slugify from 'slugify'
+import mask from 'json-mask'
 
 // LIST OBJECT
 router.get(router.version + '/models/:modelID/objects', router.requires_auth, async (req, res) => {
@@ -16,7 +17,7 @@ router.get(router.version + '/models/:modelID/objects', router.requires_auth, as
 
     const spec = await tbl.get_spec()
 
-    const target = Object.keys(req.query).find(q => spec.map(x => x.name).includes(q))
+    const target = Object.keys(req.query).find(q => spec.map(x => x.name.toLowerCase()).includes(q.toLowerCase()))
 
     if (target) {
         query = req.query[target]
@@ -51,7 +52,7 @@ router.get(router.version + '/models/:modelID/objects', router.requires_auth, as
         success: true,
         results: models.map(x => {
             delete x.__all_objects_index
-            return x
+            return req.query.fields ? mask(x, req.query.fields) : x
         }),
         model: await (new Table(req.user.id, 'models')).get(
             'id',

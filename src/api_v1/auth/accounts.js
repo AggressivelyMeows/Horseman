@@ -3,6 +3,9 @@ import { Table } from '../../lib/table.js'
 
 router.get(router.version + '/auth/@me', router.requires_auth, async (req, res) => {
     delete req.user.password_hash
+
+    req.user.options = req.user.options || {} // polyfill, babeyy
+
     res.body = {
         success: true,
         user: req.user

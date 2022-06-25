@@ -1,14 +1,9 @@
-# Miniflare Example Project
+# Horseman, the headless CMS
 
-This is an example [Cloudflare Workers](https://workers.cloudflare.com/) project that uses [Miniflare](https://github.com/cloudflare/miniflare) for local development, [esbuild](https://github.com/evanw/esbuild) for bundling, and [AVA](https://github.com/avajs/ava) for testing.
+Horseman is a headless CMS thats powered by Cloudflare KV and the Cache API.
 
-See the [⚡️ Developing with esbuild](https://miniflare.dev/recipes/esbuild.html) and [✅ Testing with AVA](https://miniflare.dev/recipes/ava.html) recipes on the [Miniflare website](https://miniflare.dev/) for more details.
+## Initalization of Horseman
+Before you can create accounts and use Horseman, you need to visit your Workers URL and `/v1/__meta/init`. This creates all the schemas for Horseman to function.
 
-```shell
-# Install dependencies
-$ npm install
-# Start local development server
-$ npm run dev
-# Run tests
-$ npm test
-```
+##  Acknowledgements
+Horseman was created by Cerulean, all code (except ./lib/tsndr_router.js) is copyright of Connor Vince.

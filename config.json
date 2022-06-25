@@ -1,0 +1,5 @@
+{
+    "ALLOW_SIGNUPS": true,
+    "PASSWORD_HASH_URL": "https://www.example.com/password_hash",
+    "PASSWORD_HASH_PASSWORD": "password"
+}

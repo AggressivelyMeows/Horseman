@@ -1,3 +1,8 @@
+// This is where the magic happens.
+// This file is responsible for manaing the data in our "table".
+// Since KV has no idea what a table is, we simulate one by creating
+// indexes and datastores as if we were a real table.
+
 import { nanoid } from 'nanoid'
 import wcmatch from 'wildcard-match'
 import { Cache } from './cache.js'
@@ -18,7 +23,12 @@ export class Table {
         return nanoid(length || 12)
     }
 
+    // All models require a "spec" to be defined.
+    // this ensures the data is always in the same format.
+    // Right now, we dont validate spec, but we should in the future.
+    // Specs are also responsible for index mangement.
     async get_spec() {
+        // hard-coded models schema. this basically never changes but is needed for inital model creation.
         if (this.table == 'models') {
             this.spec = [
                 {
@@ -114,10 +124,12 @@ export class Table {
 
         const first = idx.find(x => x[0] == search)
 
-        return await this.cache.read(`${this.get_kv_prefix()}:${first[1]}`, async () => {
+        const object = await this.cache.read(`${this.get_kv_prefix()}:${first[1]}`, async () => {
             increase_cost('read')
             return await env.CONTENTKV.get(`${this.get_kv_prefix()}:${first[1]}`, { type: 'json' })
         })
+
+        return object
     }
 
     async put(object, opt) {
