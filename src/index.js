@@ -1,4 +1,5 @@
 import { router } from './router.js'
+import { captureError } from '@cfworker/sentry'
 
 export { WriterDO } from './lib/writer.mjs'
 
@@ -10,6 +11,7 @@ import './init.js'
 
 export default {
     async fetch(request, env, ctx) {
+        // store the global request variables for use in other parts of the API
         globalThis.cloudflare = request.cf
         globalThis.env = env
         globalThis.ctx = ctx
@@ -40,8 +42,17 @@ export default {
         try {
             resp = await router.handle(request)
         } catch (e) {
-            console.error(e.toString())
-            return new Response('internal server error', { status: 500 })
+
+            const { event_id, posted } = captureError(
+                'https://9292f7a98bf841efb933169ad404dfae@o225929.ingest.sentry.io/6531416',
+                'production',
+                '0',
+                e,
+                request,
+                ''
+            )
+
+            throw e
         }
 
         const response = new Response(resp.body, resp)

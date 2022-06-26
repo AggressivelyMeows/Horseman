@@ -260,7 +260,7 @@ export class Table {
 
     async list(index, search, opt) {
         const options = Object.assign(
-            { limit: 10, order: 'oldest_first', resolve: true },
+            { limit: 30, order: 'oldest_first', resolve: true },
             opt || {}
         )
 
@@ -271,7 +271,7 @@ export class Table {
             return await env.INDEXKV.get(key, { type: 'json' })
         })
 
-        if (!idx) {
+        if ((!idx || !idx.length)) {
             return []
         }
 
@@ -279,9 +279,10 @@ export class Table {
 
         if (typeof search == 'string') {
             is_match = wcmatch(search.toLowerCase())
-        }
+        }        
 
         const is_valid_object = (obj) => {
+            console.log(is_match)
             if (typeof obj[0] == 'string') {
                 return is_match(obj[0].toLowerCase())
             }
@@ -291,6 +292,7 @@ export class Table {
 
         // idx is listed newest last
         const arg = options.limit - ( options.order == 'oldest_first' ? 0 : options.limit * 2 )
+        console.log(idx)
         let objects = idx.filter(obj => is_valid_object(obj)).splice(arg)
 
         if (options.order == 'newest_first') {

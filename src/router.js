@@ -27,6 +27,7 @@ router.requires_auth = async (req, res, next) => {
 
     let user
     if (token.includes('User')) {
+        console.log(token)
         user = await accounts.get(
             'token',
             token.split(' ')[1]

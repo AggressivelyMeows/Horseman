@@ -14,7 +14,7 @@
                     </div>
                 </router-link>
 
-                <div class="flex flex-col text-xs text-gray-400 ml-4">
+                <div class="flex flex-col text-xs text-gray-400 ml-4 hidden md:block">
                     <p>Reads: {{$api.state.reads}}</p>
                     <p>Writes: {{$api.state.writes}}</p>
                     <p>Cache hits: {{$api.state.cache_hits}}</p>

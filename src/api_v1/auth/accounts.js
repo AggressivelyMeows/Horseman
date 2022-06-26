@@ -13,6 +13,17 @@ router.get(router.version + '/auth/@me', router.requires_auth, async (req, res) 
 })
 
 router.post(router.version + '/auth/signup', async (req, res) => {
+
+    if (!env.ALLOW_SIGNUPS) {
+        res.body = {
+            success: false,
+            error: 'Signups are not allowed right now, please try again later.',
+            code: 'SIGNUPS_NOT_ALLOWED'
+        }
+        res.status = 403
+        return
+    }
+
     const data = req.body
 
     if (!data.password) {
@@ -53,7 +64,7 @@ router.post(router.version + '/auth/signup', async (req, res) => {
     // we can use the ID of the key instead of a token since the tok and ID gen are the same generator.
     await keys.put({
         'userID': account.id,
-        'permissions': [ 'read:all', 'write:all' ]
+        'permissions': [ 'read:all' ]
     })
 
     res.body = {
@@ -75,7 +86,7 @@ router.post(router.version + '/auth/login', async (req, res) => {
         data.email
     )
 
-    const resp = await fetch('https://password-hashing.sponsus.workers.dev/v1/compare', {
+    const resp = await fetch(`https://${env.PASSWORD_HASHER_DOMAIN}/v1/compare`, {
         method: 'POST',
         headers: { 'Authorization': env.PASSWORD_HASHER_KEY, 'content-type': 'application/json' },
         body: JSON.stringify({

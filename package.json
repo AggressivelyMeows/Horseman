@@ -5,7 +5,7 @@
   "type": "module",
   "main": "./dist/index.js",
   "scripts": {
-    "deply": "npx wrangler@beta publish",
+    "deploy": "npx wrangler@beta publish",
     "build": "node ./build.js",
     "dev": "miniflare --watch --debug --env .secrets.env",
     "test": "npm run build && ava --verbose test/*.spec.js"
@@ -19,6 +19,8 @@
     "miniflare": "^2.0.0"
   },
   "dependencies": {
+    "@cfworker/sentry": "^1.12.2",
+    "@cloudflare/worker-sentry": "^1.0.0",
     "@tsndr/cloudflare-worker-router": "^1.3.2",
     "apollo-server-cloudflare": "^3.9.0",
     "flexsearch": "^0.7.21",

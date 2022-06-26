@@ -15,11 +15,11 @@
             </a>
         </o-modal>
 
-        <div class="flex flex-row">
+        <div class="flex flex-col md:flex-row">
             <h4 class="heading flex-grow">
                 "{{model.id}}" objects
             </h4>
-            <a class="button ~yellow @high text-sm px-3 mr-2" @click="show_cache_clear_modal = true">
+            <a class="button ~yellow @high text-sm px-3 my-2 mr-0 md:my-0 md:mr-2" @click="show_cache_clear_modal = true">
                 Clear cache
             </a>
             <router-link :to="`/dashboard/models/${$route.params.modelID}/editor/new`" class="button ~primary @high text-sm px-3">

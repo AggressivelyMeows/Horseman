@@ -111,9 +111,20 @@ router.post(router.version + '/models/:modelID/objects/:objectID', router.requir
         req.params.modelID
     )
 
+    const spec = await tbl.get_spec()
+
+    const update = {}
+
+    spec.map(x => {
+        // prevents the user from updating keys and values we need for record keeping like metadata and id.
+        if (req.body[x.name]) {
+            update[x.name] = req.body[x.name]
+        }
+    })
+
     await tbl.update(
         req.params.objectID,
-        req.body
+        update
     )
 
     res.body = {
