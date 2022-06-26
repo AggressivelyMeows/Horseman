@@ -1,8 +1,7 @@
 var fs = require('fs')
 const { parse } = require("csv-parse");
 
-const list = `
-Ashburn, US
+const list = `Ashburn, US
 Atlanta, US
 Boston, US
 Buffalo, US

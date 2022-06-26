@@ -54,8 +54,9 @@
                             <o-select placeholder="Select a name" v-model="element.type">
                                 <option value="string">Short text</option>
                                 <option value="markdown">Markdown</option>
+                                <option value="html">HTML</option>
                                 <option value="dropdown">Dropdown</option>
-                                <option value="tag">Tag insert</option>
+                                <option value="tag">Tag</option>
                             </o-select>
                         </o-field>
 

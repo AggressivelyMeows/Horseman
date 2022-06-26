@@ -260,7 +260,7 @@ export class Table {
 
     async list(index, search, opt) {
         const options = Object.assign(
-            { limit: 10, order: 'oldest_first' },
+            { limit: 10, order: 'oldest_first', resolve: true },
             opt || {}
         )
 
@@ -297,6 +297,8 @@ export class Table {
             objects = objects.reverse()
         }
 
-        return await Promise.all(objects.map(async kx => await this.get('id', kx[1])))
+        return await Promise.all(objects.map(async kx => {
+            return options.resolve ? this.get('id', kx[1]) : kx[1]
+        }))
     }
 }

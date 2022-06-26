@@ -137,3 +137,40 @@ router.delete(router.version + '/models/:modelID/objects/:objectID', router.requ
         success: true
     }
 })
+
+// CLEAR MODEL CACHE
+router.delete(router.version + '/models/:modelID/cache', router.requires_auth, async (req, res) => {
+    const tbl = new Table(
+        req.user.id,
+        req.params.modelID
+    )
+
+    await tbl.get_spec()
+
+    // list all of this models indexes
+    const indexes = tbl.spec.map(x => x.index ? x.name : null ).filter(x=>x)
+
+    await Promise.all(indexes.map(async x => {
+        return tbl.cache.delete(`${tbl.get_kv_prefix()}:${x}:index`)
+    }))
+
+    const keys = await tbl.list(
+        '__all_objects_index',
+        0,
+        {
+            mode: 'eq',
+            limit: 1000,
+            resolve: false
+        }
+    )
+
+    console.log(keys)
+
+    await Promise.all(keys.map(async x => {
+        return tbl.cache.delete(`${tbl.get_kv_prefix()}:${x}`)
+    }))
+
+    res.body = {
+        success: true,
+    }
+})

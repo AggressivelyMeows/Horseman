@@ -1,3 +1,7 @@
+// ROUTER CODE IS FROM https://www.npmjs.com/package/@tsndr/cloudflare-worker-router
+// THIS FILE HAS BEEN MODIFIED TO PASS ERRORS TO WORKER
+// AS WELL AS SUPPORT WEBSOCKET REQUESTS
+
 /**
  * Router
  * 

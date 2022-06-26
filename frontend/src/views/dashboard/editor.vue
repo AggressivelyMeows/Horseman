@@ -20,6 +20,7 @@
                         v-if="element.type == 'string'"
                         v-model="object[element.name]"
                         class="w-full rounded-md bg-gray-800 text-sm px-2 py-2 border-none border-gray-700 focus:outline-none focus:border-primary-900 focus:ring-primary-600 focus:ring-1"
+                        style="border-radius:0.375rem;"
                         :placeholder="`${element.name}`"
                     />
 
@@ -30,6 +31,16 @@
                     </o-select>
 
                     <o-inputitems expanded v-if="element.type == 'tag'" v-model="object[element.name]" placeholder="Add an item" aria-close-label="Delete this item"></o-inputitems>
+                
+                    <div v-if="element.type == 'html' && object[element.name] != undefined" class="w-full">
+                        <QuillEditor
+                            theme="snow"
+                            contentType="html"
+                            :toolbar="toolbar"
+                            v-model:content="object[element.name]"
+                            placeholder="Start typing your content here!"
+                        />
+                    </div>
                 </o-field>
             </div>
         </div>
@@ -38,6 +49,26 @@
 
 <script>
     import slugify from 'slugify'
+    import { QuillEditor } from '@vueup/vue-quill'
+    import '@vueup/vue-quill/dist/vue-quill.snow.css'
+
+    const toolbar = [
+        [
+            { 'header': [1, 2, 3, 4, 5, 6, false] },
+            { 'font': [] },
+            { 'align': [] }
+        ],
+
+        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+        ['blockquote', 'code-block'],
+
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        
+        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+
+
+        ['clean']
+    ]
 
     function array_move(arr, old_index, new_index) {
         if (new_index >= arr.length) {
@@ -52,6 +83,7 @@
 
     export default {
         data: () => ({
+            toolbar,
             object: {},
             model: {
                 id: 'new',
@@ -73,12 +105,27 @@
                                 string: '',
                                 markdown: '',
                                 dropdown: '',
+                                html: '',
                                 tag: []
                             }[field.type]
                         })
                     } else {
                         this.$api.get(`/models/${this.$route.params.modelID}/objects/${this.$route.params.objectID}`).then(resp => {
                             this.object = resp.data.object
+
+                            this.model.spec.map(field => {
+                                const has_value = this.object[field.name] != undefined
+
+                                if (!has_value) {
+                                    this.object[field.name] = {
+                                        string: '',
+                                        markdown: '',
+                                        dropdown: '',
+                                        html: '',
+                                        tag: []
+                                    }[field.type]
+                                }
+                            })
                         })
                     }
                 })
@@ -129,6 +176,9 @@
                     this.$router.push(`/dashboard/models/${this.$route.params.modelID}/objects`)
                 }).catch(e => this.$api.error_notification(e))
             }
+        },
+        components: {
+            QuillEditor
         }
     }
 </script>

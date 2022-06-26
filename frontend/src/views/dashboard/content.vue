@@ -1,9 +1,27 @@
 <template>
     <div class="p-4">
+
+        <o-modal v-model:active="show_cache_clear_modal">
+            <h4 class="heading">
+                Clear cache
+            </h4>
+            <h5 class="subheading"> 
+                Clearing cache will reset the server-side cache for all 250+ locations. This will significantly slow down the speed of your content for the first hit. You will also incur a read hit for each location as your content is requested.
+                
+                <br/><br/>Horseman manages its own cache efficiently, however if you notice your content is not being served, you can clear the cache manually.
+            </h5>
+            <a class="button ~yellow @high mt-4" @click="clear_cache">
+                Clear {{model.id}}'s cache
+            </a>
+        </o-modal>
+
         <div class="flex flex-row">
             <h4 class="heading flex-grow">
                 "{{model.id}}" objects
             </h4>
+            <a class="button ~yellow @high text-sm px-3 mr-2" @click="show_cache_clear_modal = true">
+                Clear cache
+            </a>
             <router-link :to="`/dashboard/models/${$route.params.modelID}/editor/new`" class="button ~primary @high text-sm px-3">
                 New
             </router-link>
@@ -71,16 +89,26 @@
 
 <script>
     import gradient from 'random-gradient'
-    
-    function relDiff(a, b) {
-        return ((a - b) / b) * 100
-    }
 
     export default {
         mounted() {
             this.init()
         },
         methods: {
+            clear_cache() {
+                this.loading = true
+                this.$api.delete(`/models/${this.model.id}/cache`).then(() => {
+                    this.$notify({
+                        title: 'Cache cleared',
+                        text: 'Please give up to 30 seconds for the worldwide cache to be clear',
+                        type: 'warning',
+                    })
+
+                    this.show_cache_clear_modal = false
+                }).finally(() => {
+                    this.loading = false
+                })
+            },
             init() {
                 this.loading = true
                 this.$api.get(`/models/${this.$route.params.modelID}/objects`).then(resp => {
@@ -110,6 +138,7 @@
         },
         data: () => ({
             loading: false,
+            show_cache_clear_modal: false,
             query: '',
             objects: [],
             model: {
