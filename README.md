@@ -4,8 +4,9 @@
 
 Horseman is a headless CMS thats powered by Cloudflare KV and the Cache API. Using DurableObjects to ensure data indexes are valid and up to date.
 
-You can find a public Horseman instance on my website, here:
-https://horseman.ceru.dev/
+You can find a public Horseman instance on my website, here: https://horseman.ceru.dev/
+
+API documentation can be found here: https://horseman.stoplight.io/docs/horseman/abe38a2fb9c9d-list-models
 
 ## 🔥 Todo / Feature list
 
