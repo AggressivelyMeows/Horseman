@@ -13,6 +13,8 @@ API documentation can be found here: https://horseman.stoplight.io/docs/horseman
 - Pub/Sub channels for getting up to date information on your Objects.
 - Better documentation
 
+Have an idea? Make a discussion post about it and tell us all about your awesome idea!!
+
 ## 🤔 Why?
 Horseman was created when I wanted to make a news feed for Wordful. Looking at other offerings, I wished for something simple, yet quick. After some quick discussions, I realised I could make my own headless CMS by utilising Cloudflare's global KV. This makes Horseman no less than 50ms from anyone around the world.
 
@@ -21,7 +23,7 @@ What you'll need:
 - A machine with Wrangler 2
 - A paid Workers subscription ($5 a month, used for the password hashing Worker)
 - A setup, working password hashing Worker: (https://github.com/AggressivelyMeows/password-hashing)
-- Please read the README to get the Worker setup correctly.
+- Please read the README to get the passowrd hashing Worker setup correctly.
 
 #### Step 1 - Config
 Open wrangler.toml and edit the lines described by the comments. Make sure to follow them precicely otherwise Horseman will not work.
