@@ -10,6 +10,7 @@ kv_namespaces = [
 ]
 
 [vars]
+HORSEMAN_VERSION = "1.0.0"
 # You need to deploy this Worker (https://github.com/AggressivelyMeows/password-hashing) to your account.
 # MAKE SURE TO SET THE ACCESS_KEY ENVIRONMENT VARIABLE FOR THE PASSWORD HASHER.
 # Once done, put the domain its running under below:

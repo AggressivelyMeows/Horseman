@@ -58,7 +58,7 @@ Change License:       Apache License version 2.0 as published by the Apache
 Alternative Licensing
 
 If you would like to use the Licensed Work in any way that conflicts with
-the stipulations of the Additional Use Grant, contact Horseman, Inc. to
+the stipulations of the Additional Use Grant, contact Connor Vince. to
 obtain an alternative commercial license.
 
 Visit us on the web at: https://horseman.ceru.dev
