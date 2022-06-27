@@ -14,10 +14,10 @@ Horseman was created when I wanted to make a news feed for Wordful. Looking at o
 
 ## 🔧 Setting up
 What you'll need:
-    - A machine with Wrangler 2
-    - A paid Workers subscription ($5 a month, used for the password hashing Worker)
-    - A setup, working password hashing Worker: (https://github.com/AggressivelyMeows/password-hashing)
-        - Please read the README to get the Worker setup correctly.
+- A machine with Wrangler 2
+- A paid Workers subscription ($5 a month, used for the password hashing Worker)
+- A setup, working password hashing Worker: (https://github.com/AggressivelyMeows/password-hashing)
+- Please read the README to get the Worker setup correctly.
 
 #### Step 1 - Config
 Open wrangler.toml and edit the lines described by the comments. Make sure to follow them precicely otherwise Horseman will not work.
@@ -26,4 +26,4 @@ Open wrangler.toml and edit the lines described by the comments. Make sure to fo
 Run `npx wrangler publish` to publish Horseman to your Cloudflare account. Once done, you will neekd to visit `/v1/__meta/init` to start the database. This step is *required* for Horseman to know whats going on.
 
 ## ✨ Acknowledgements
-Horseman was created by Cerulean, all code (except ./lib/tsndr_router.js, from https://www.npmjs.com/package/@tsndr/cloudflare-worker-router) is copyright of Connor Vince.
+Horseman was created by Cerulean, all code (except ./src/tsndr_router.js, from https://www.npmjs.com/package/@tsndr/cloudflare-worker-router, read comments for why) is copyright of Connor Vince.
