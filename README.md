@@ -4,19 +4,28 @@
 
 Horseman is a headless CMS thats powered by Cloudflare KV and the Cache API. Using DurableObjects to ensure data indexes are valid and up to date.
 
+Horseman was created when I wanted to make a news feed for [Wordful](https://wordful.ceru.dev), my multiplayer Wordle game. Looking at other offerings, I wished for something simple, yet quick. After some quick discussions, I realised I could make my own headless CMS by utilising Cloudflare's global KV. This makes Horseman no less than 50ms from anyone around the world.
+
 You can find a public Horseman instance on my website, here: https://horseman.ceru.dev/
 
 API documentation can be found here: https://horseman.stoplight.io/docs/horseman/abe38a2fb9c9d-list-models
 
-## 🔥 Todo / Feature list
+## ⚡ Features
+- World-wide, high speed, infinitely scalable, all thanks to Cloudflare Workers.
+- Modern, sleek UI for creating and managing your Objects.
+- Caching API built in, smartly clears cache to ensure your data is always up to date world-wide. Also reduces read costs significantly so you dont have to worry about a sudden burst of requests killing your bill.
+- Wildcard searching built-in. Alongside other features such as cursors, Horseman can perform wildcard searching on any indexed field.
+    - For example: `?Field=eq.Hello*` would find any Object with `Hello` in `Field`. Wildcards can go anywhere in the string.
+
+## 🔥 Todo
 
 - Pub/Sub channels for getting up to date information on your Objects.
-- Better documentation
+- An "organisation" system to allow people to be assigned to groups modifying the same group of Objects.
+- A plugin system to support third-party modifications to the API. For self-hosted users only, however would allow for people to add custom content-based embeds/RSS feeds.
+- Ask for more feedback
+- Better documentation 📚
 
-Have an idea? Make a discussion post about it and tell us all about your awesome idea!!
-
-## 🤔 Why?
-Horseman was created when I wanted to make a news feed for Wordful. Looking at other offerings, I wished for something simple, yet quick. After some quick discussions, I realised I could make my own headless CMS by utilising Cloudflare's global KV. This makes Horseman no less than 50ms from anyone around the world.
+*Have an idea? Make a discussion post about it and tell us all about your awesome idea!!*
 
 ## 🔧 Setting up
 What you'll need:
