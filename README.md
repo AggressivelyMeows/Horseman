@@ -4,13 +4,16 @@
 
 Horseman is a headless CMS thats powered by Cloudflare KV and the Cache API. Using DurableObjects to ensure data indexes are valid and up to date.
 
+You can find a public Horseman instance on my website, here:
+https://horseman.ceru.dev/
+
 ## 🔥 Todo / Feature list
 
 - Pub/Sub channels for getting up to date information on your Objects.
 - Better documentation
 
 ## 🤔 Why?
-Horseman was created when I wanted to make a news feed for Wordful. Looking at other offerings, I found them to be lacking
+Horseman was created when I wanted to make a news feed for Wordful. Looking at other offerings, I wished for something simple, yet quick. After some quick discussions, I realised I could make my own headless CMS by utilising Cloudflare's global KV. This makes Horseman no less than 50ms from anyone around the world.
 
 ## 🔧 Setting up
 What you'll need:
@@ -26,4 +29,4 @@ Open wrangler.toml and edit the lines described by the comments. Make sure to fo
 Run `npx wrangler publish` to publish Horseman to your Cloudflare account. Once done, you will neekd to visit `/v1/__meta/init` to start the database. This step is *required* for Horseman to know whats going on.
 
 ## ✨ Acknowledgements
-Horseman was created by Cerulean, all code (except ./src/tsndr_router.js, from https://www.npmjs.com/package/@tsndr/cloudflare-worker-router, read comments for why) is copyright of Connor Vince.
+Horseman was created by Cerulean, all code (except ./src/tsndr_router.js, from https://www.npmjs.com/package/@tsndr/cloudflare-worker-router, read comments for why) is copyright of Connor Vince. Please read the Licence terms before publishing your own Horseman instance.
