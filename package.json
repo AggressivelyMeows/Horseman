@@ -12,7 +12,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "BSL",
   "devDependencies": {
     "ava": "^3.15.0",
     "esbuild": "^0.13.2",
