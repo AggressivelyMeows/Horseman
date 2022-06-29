@@ -35,7 +35,7 @@ router.post(router.version + '/auth/signup', async (req, res) => {
         return
     }
 
-    const hash_resp = await fetch('https://password-hashing.sponsus.workers.dev/v1/hash', {
+    const hash_resp = await env.PASSWORD_HASHING.fetch('https://hash.com/v1/hash', {
         method: 'POST',
         headers: { 'Authorization': env.PASSWORD_HASHER_KEY, 'content-type': 'application/json' },
         body: JSON.stringify({
@@ -63,8 +63,10 @@ router.post(router.version + '/auth/signup', async (req, res) => {
 
     // we can use the ID of the key instead of a token since the tok and ID gen are the same generator.
     await keys.put({
-        'userID': account.id,
-        'permissions': [ 'read:all' ]
+        userID: account.id,
+        type: 'public', // public keys are used for accessing Objects that are published
+        // a key with the type of `preview` is used for accessing Objects that are marked as "draft"
+        permissions: [ 'read:all' ],
     })
 
     res.body = {
@@ -86,7 +88,7 @@ router.post(router.version + '/auth/login', async (req, res) => {
         data.email
     )
 
-    const resp = await fetch(`https://${env.PASSWORD_HASHER_DOMAIN}/v1/compare`, {
+    const resp = await env.PASSWORD_HASHING.fetch('https://hash.com/v1/compare', {
         method: 'POST',
         headers: { 'Authorization': env.PASSWORD_HASHER_KEY, 'content-type': 'application/json' },
         body: JSON.stringify({
@@ -116,6 +118,7 @@ router.get(router.version + '/auth/keys', router.requires_auth, async (req, res)
         'userID',
         req.user.id,
         {
+            limit: 100,
             order: 'newest_first'
         }
     )
@@ -123,5 +126,147 @@ router.get(router.version + '/auth/keys', router.requires_auth, async (req, res)
     res.body = {
         success: true,
         results: keys
+    }
+})
+
+router.get(router.version + '/auth/keys/:keyID', router.requires_auth, async (req, res) => {
+    const tbl = new Table('internal', 'keys')
+
+    const key = await tbl.get(
+        'id',
+        req.params.keyID
+    )
+
+    if (!key) {
+        res.body = {
+            success: false,
+            error: 'Key not found',
+            code: 'KEY_NOT_FOUND'
+        }
+        res.status = 404
+        return
+    }
+
+    if (key.userID !== req.user.id) {
+        res.body = {
+            success: false,
+            error: 'You do not have permission to access this key',
+            code: 'NO_PERMISSION'
+        }
+        res.status = 403
+        return
+    }
+
+    res.body = {
+        success: true,
+        key
+    }
+})
+
+// POST
+router.post(router.version + '/auth/keys', router.requires_auth, async (req, res) => {
+    const keys = new Table(
+        'internal',
+        'keys'
+    )
+
+    const key = await keys.put({
+        userID: req.user.id,
+        type: req.body.type, // public keys are used for accessing Objects that are published
+        label: req.body.label.substring(0, 255),
+        // a key with the type of `preview` is used for accessing Objects that are marked as "draft"
+        permissions: req.body.permissions,
+    })
+
+    res.body = {
+        success: true,
+        key
+    }
+})
+
+// Update a key
+router.post(router.version + '/auth/keys/:keyID', router.requires_auth, async (req, res) => {
+    const tbl = new Table(
+        'internal',
+        'keys'
+    )
+
+    const key = await tbl.get(
+        'id',
+        req.params.keyID
+    )
+
+    if (!key) {
+        res.body = {
+            success: false,
+            error: 'Key not found',
+            code: 'KEY_NOT_FOUND'
+        }
+        res.status = 404
+        return
+    }
+
+    if (key.userID !== req.user.id) {
+        res.body = {
+            success: false,
+            error: 'You do not have permission to access this key',
+            code: 'NO_PERMISSION'
+        }
+        res.status = 403
+        return
+    }
+
+    const update = {
+        type: req.body.type,
+        label: req.body.label.substring(0, 255),
+        permissions: req.body.permissions,
+    }
+
+    await tbl.update(
+        req.params.keyID,
+        update
+    )
+
+    res.body = {
+        success: true
+    }
+})
+
+
+router.delete(router.version + '/auth/keys/:keyID', router.requires_auth, async (req, res) => {
+    const tbl = new Table('internal', 'keys')
+
+    const key = await tbl.get(
+        'id',
+        req.params.keyID
+    )
+
+    if (!key) {
+        res.body = {
+            success: false,
+            error: 'Key not found',
+            code: 'KEY_NOT_FOUND'
+        }
+        res.status = 404
+        return
+    }
+
+    if (key.userID !== req.user.id) {
+        res.body = {
+            success: false,
+            error: 'You do not have permission to access this key',
+            code: 'NO_PERMISSION'
+        }
+        res.status = 403
+        return
+    }
+
+    await tbl.delete(
+        key.id
+    )
+
+    res.body = {
+        success: true,
+        key
     }
 })

@@ -65,6 +65,13 @@ export class WriterDO {
                 // prefix should be userID:tablename:field
                 let idx = await this.env.INDEXKV.get(prefix + ':index', { type: 'json' })
 
+                if (!idx) {
+                    return {
+                        success: false,
+                        error: 'This object doesnt exist in this index'
+                    }
+                }
+
                 idx = idx.filter(x => x[1] != objectID)
 
                 if (idx.length == 0) {

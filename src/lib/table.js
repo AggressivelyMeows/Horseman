@@ -143,6 +143,14 @@ export class Table {
             object.id = nanoid(12)
         }
 
+        if (!object.metadata) {
+            object.metadata = {
+                published: true,
+                published_at: new Date().toISOString(),
+                created_at: new Date().toISOString(),
+            }
+        }
+
         const objectID = `${this.get_kv_prefix()}:${object.id}`
 
         increase_cost('write')
@@ -260,12 +268,13 @@ export class Table {
 
     async list(index, search, opt) {
         const options = Object.assign(
-            { limit: 30, order: 'oldest_first', resolve: true },
+            { mode: 'eq', limit: 30, order: 'oldest_first', read_level: 'preview', resolve: true },
             opt || {}
         )
 
         const key = `${this.get_kv_prefix()}:${index}:index`
 
+        // get the index from the cache or from the KV store if it's not in the cache yet
         const idx = await this.cache.read(key, async () => {
             increase_cost('read')
             return await env.INDEXKV.get(key, { type: 'json' })
@@ -276,31 +285,73 @@ export class Table {
         }
 
         let is_match
+        let is_valid_object
 
-        if (typeof search == 'string') {
+        if (options.mode == 'eq' && typeof search == 'string') {
             is_match = wcmatch(search.toLowerCase())
-        }        
 
-        const is_valid_object = (obj) => {
-            console.log(is_match)
-            if (typeof obj[0] == 'string') {
-                return is_match(obj[0].toLowerCase())
+            is_valid_object = (obj) => {
+                if (typeof obj[0] == 'string') {
+                    return is_match(obj[0].toLowerCase())
+                }
+
+                if (Array.isArray(obj[0])) {
+                    return obj[0].map(x => is_match(x.toLowerCase())).includes(true)
+                }
+
+                return obj[0] == search
             }
 
-            return obj[0] == search
+        } else if (options.mode == 'inc') {
+            // replaces all \, with a block of characters, splits on ,, then removes the block and converts to a wildcard supported search
+            // to ensure an object is valid, we need to check if all tags in the search string are in the object
+            is_match = search.replace('\\,','<INSERTCOMMAHERE>')
+                .split(',')
+                .map(x => wcmatch(x.replace('<INSERTCOMMAHERE>', ',').toLowerCase()))
+
+            is_valid_object = (obj) => {
+                return obj[0].map(x => is_match.map(y => y(x.toLowerCase())).includes(true)).includes(true)
+            }
+
+        } else {
+            // if mode has no filter or one of the checks fails, we have a default search that just equates both
+            is_valid_object = (obj) => {
+                return obj[0] == search
+            }
         }
 
         // idx is listed newest last
         const arg = options.limit - ( options.order == 'oldest_first' ? 0 : options.limit * 2 )
-        console.log(idx)
         let objects = idx.filter(obj => is_valid_object(obj)).splice(arg)
 
+        // if we are ordering by newest first, reverse the array
         if (options.order == 'newest_first') {
             objects = objects.reverse()
         }
 
-        return await Promise.all(objects.map(async kx => {
-            return options.resolve ? this.get('id', kx[1]) : kx[1]
-        }))
+        return (await Promise.all(objects.map(async kx => {
+            // since we are not resolving, we can just return the ID
+            if (!options.resolve) {
+                return kx[1]
+            }
+
+            // if we're resolving, we need to get the object
+            const obj = await this.get(
+                'id',
+                kx[1]
+            )
+
+            // if the object is from before we added the publish field
+            // bypass the check and return it
+            if (!('published' in obj?.metadata)) {
+                return obj
+            }
+
+            if (obj?.metadata?.published || (!obj?.metadata?.published && options.read_level == 'preview')) {
+                return obj
+            }
+
+            return null
+        }))).filter(x => x)
     }
 }

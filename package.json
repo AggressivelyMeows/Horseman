@@ -7,7 +7,7 @@
   "scripts": {
     "deploy": "npx wrangler@beta publish",
     "build": "node ./build.js",
-    "dev": "miniflare --watch --debug --env .secrets.env",
+    "dev": "npx miniflare@latest --watch --debug --env .secrets.env",
     "test": "npm run build && ava --verbose test/*.spec.js"
   },
   "keywords": [],

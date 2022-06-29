@@ -27,13 +27,17 @@ router.requires_auth = async (req, res, next) => {
 
     let user
     if (token.includes('User')) {
-        console.log(token)
         user = await accounts.get(
             'token',
             token.split(' ')[1]
         )
 
         user.authorization_type = 'email'
+        user.read_level = 'preview'
+        user.permissions = [
+            'read:all',
+            'write:all'
+        ]
     } else {
         const key = await (new Table(
             'internal',
@@ -43,17 +47,69 @@ router.requires_auth = async (req, res, next) => {
             token
         )
 
+        if (!key) {
+            res.body = {
+                success: false,
+                error: 'Invalid authorization token',
+                code: 'AUTH_TOKEN_INVALID'
+            }
+            res.status = 403
+            return
+        }
+
         user = await accounts.get(
             'id',
             key.userID
         )
 
         user.authorization_type = 'key'
+        user.read_level = key.type
         user.key = key
+        user.permissions = key.permissions
     }
     
     req.user = user
-    
+
+    if (user.authorization_type == 'key' && !'modelID' in req.params) {
+        res.body = {
+            success: false,
+            error: 'Invalid use of an API key, must be used with a model',
+            code: 'AUTH_KEY_INVALID'
+        }
+        res.status = 403
+        return
+    }
+
+    if ('modelID' in req.params) {
+        // this is a request targeting one of the models on the API
+        // check if the user has the right to access this model
+        const model = req.params.modelID
+
+        if (req.method == 'GET' && !user.permissions.includes('read:all')) {
+            if (!user.permissions.includes(`read:${model}`)) {
+                res.body = {
+                    success: false,
+                    error: 'This key does not have access to read this model. Please validate your permissions with the owner of this key.',
+                    code: 'AUTH_MODEL_DENIED'
+                }
+                res.status = 403
+                return
+            }
+        }
+
+        if (['POST', 'DELETE'].includes(req.method) && !user.permissions.includes('write:all')) {
+            if (!user.permissions.includes(`write:${model}`)) {
+            
+                res.body = {
+                    success: false,
+                    error: 'This key does not have access to write to this model. Please validate your permissions with the owner of this key.',
+                    code: 'AUTH_MODEL_DENIED'
+                }
+                res.status = 403
+                return
+            }
+        }
+    }
 
     await next()
 }

@@ -29,6 +29,8 @@ router.get(router.version + '/__meta/init', async (req, res) => {
 
     await keys.set_spec([
         {'name': 'userID', 'type': 'string', 'index': true },
+        {'name': 'label', 'type': 'string', 'index': true },
+        {'name': 'type', 'type': 'string'}, // public or preview
         {'name': 'permissions', 'type': 'array' }
     ])
 

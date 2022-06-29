@@ -86,7 +86,7 @@
                         <o-checkbox v-model="model.options.title_field" :trueValue="element.name" false-value="">This field is the model's title</o-checkbox>
                     </div>
 
-                    <div class="mt-2" v-if="model.id == 'new' && element.type == 'string'">
+                    <div class="mt-2" v-if="model.id == 'new' && ['string', 'dropdown', 'tag'].includes(element.type)">
                         <o-checkbox v-model="element.index">Indexable</o-checkbox>
                     </div>
 

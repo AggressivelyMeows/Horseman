@@ -1,21 +1,28 @@
 <template>
     <div class="grid grid-cols-12 gap-4" >
-        <div class="col-span-12 md:col-span-3 mt-4 text-gray-200 space-y-2">
+        <div class="col-span-12 md:col-span-3 mt-4 text-gray-200">
             <b class="text-gray-200  block px-2">
                 💽 Your data
             </b>
-            
-            <router-link to="/dashboard/models" class="button w-full bg-gray-850 justify-start px-4 py-2 font-medium" active-class="bg-gray-900 text-primary-500">
-                Models
-            </router-link>
+             
+            <div class="space-y-2 mt-2">
+                <router-link to="/dashboard/models" class="button w-full bg-gray-850 justify-start px-4 py-2 font-medium" active-class="bg-gray-900 text-primary-500">
+                    Models
+                </router-link>
+                <router-link to="/dashboard/access/keys" class="button w-full bg-gray-850 justify-start px-4 py-2 font-medium" active-class="bg-gray-900 text-primary-500">
+                    API keys
+                </router-link>
+            </div>
 
-            <b class="text-gray-200 block px-2">
+            <b class="text-gray-200 block px-2 mt-4">
                 🔏 Your objects
             </b>
 
-            <router-link v-for="model in models" :to="`/dashboard/models/${model.id}/objects`" class="button w-full bg-gray-850 justify-start px-4 py-2 font-medium" active-class="bg-gray-900 text-primary-500">
-                {{model.id}}
-            </router-link>
+            <div class="space-y-2 mt-2">
+                <router-link v-for="model in models" :to="`/dashboard/models/${model.id}/objects`" class="button w-full bg-gray-850 justify-start px-4 py-2 font-medium" active-class="bg-gray-900 text-primary-500">
+                    {{model.id}}
+                </router-link>
+            </div>
 
             <div v-if="!loading_models && !models.length" class="bg-gray-850 rounded-md p-4 flex flex-col items-center justify-center text-gray-400">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">

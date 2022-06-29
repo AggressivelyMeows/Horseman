@@ -13,6 +13,7 @@ export default {
     async fetch(request, env, ctx) {
         // store the global request variables for use in other parts of the API
         globalThis.cloudflare = request.cf
+        globalThis.request = request
         globalThis.env = env
         globalThis.ctx = ctx
 

@@ -1,5 +1,11 @@
 <template>
-    <div class="p-4 text-gray-200 ">
+    <div class="p-4 text-gray-200 relative">
+
+        <LoadingOverlay
+            :loading="loading"
+            :loadingMessage="loading_message"
+        />
+
         <div class="flex flex-row  items-center">
             <h4 class="heading flex-grow">
                 {{ $route.params.objectID == 'new' ? 'Creating' : 'Editing' }} {{model.id}}
@@ -8,7 +14,16 @@
             <a class="button ~red @high mr-2" @click="del_object" v-if="$route.params.objectID != 'new'">
                 Delete
             </a>
-            <a class="button ~green @high" @click="save">
+
+            <a class="button ~yellow @high" @click="publish" v-if="object?.metadata?.published && $route.params.objectID != 'new'">
+                Unpublish
+            </a>
+
+            <a class="button ~green @high" @click="publish" v-if="!object?.metadata?.published && $route.params.objectID != 'new'">
+                Publish
+            </a>
+
+            <a class="button ~green @high ml-2" @click="save">
                 {{ $route.params.objectID == 'new' ? 'Create' : 'Save' }}
             </a>
         </div>
@@ -48,6 +63,7 @@
 </template>
 
 <script>
+    import LoadingOverlay from '@/components/loading_overlay.vue'
     import slugify from 'slugify'
     import { QuillEditor } from '@vueup/vue-quill'
     import '@vueup/vue-quill/dist/vue-quill.snow.css'
@@ -83,6 +99,8 @@
 
     export default {
         data: () => ({
+            loading: false,
+            loading_message: '',
             toolbar,
             object: {},
             model: {
@@ -92,9 +110,13 @@
             },
             spec: []
         }),
-        mounted() {
+        async mounted() {
             if (this.$route.params.modelID) {
                 // load model from API
+
+                this.loading = true
+
+                await new Promise(r => setTimeout(r, 1000))
 
                 this.$api.get(`/models/${this.$route.params.modelID}`).then(resp => {
                     this.model = resp.data.model
@@ -128,11 +150,25 @@
                             })
                         })
                     }
+                }).finally(() => {
+                    this.loading = false
                 })
 
             }
         },
         methods: {
+            publish() {
+                //this.object.metadata.published = !this.object.metadata.published
+
+                this.loading = true
+                this.loading_message = `${!this.object.metadata.published ? 'Publishing' : 'Un-publishing'} this Object`
+
+                this.$api.post(`/models/${this.$route.params.modelID}/objects/${this.$route.params.objectID}/state`, { published: !this.object.metadata.published }).then(resp => {
+                    this.object.metadata.published = resp.data.published
+                }).finally(() => {
+                    this.loading = false
+                })
+            },
             move_key(idx, move) {
                 this.model.spec = array_move(
                     this.model.spec,
@@ -153,6 +189,9 @@
                 })
             },
             del_object() {
+                this.loading = true
+                this.loading_message = `Deleting this Object`
+
                 this.$api.delete(`/models/${this.model.id}/objects/${this.$route.params.objectID}`).then(resp => {
                     this.$notify({
                         title: 'Object deleted',
@@ -161,9 +200,14 @@
                     })
 
                     this.$route.push(`/dashboard/models/${this.model.id}/content`)
-                }).catch(e => this.$api.error_notification(e))
+                }).catch(e => this.$api.error_notification(e)).finally(() => {
+                    this.loading = false
+                })
             },
             save() {
+                this.loading = true
+                this.loading_message = `Saving this Object`
+
                 const route = `/models/${this.model.id}/objects` + (this.$route.params.objectID == 'new' ? '' : `/${this.$route.params.objectID}`)
 
                 this.$api.post(route, this.object).then(resp => {
@@ -174,11 +218,14 @@
                     })
 
                     this.$router.push(`/dashboard/models/${this.$route.params.modelID}/objects`)
-                }).catch(e => this.$api.error_notification(e))
+                }).catch(e => this.$api.error_notification(e)).finally(() => {
+                    this.loading = false
+                })
             }
         },
         components: {
-            QuillEditor
+            QuillEditor,
+            LoadingOverlay
         }
     }
 </script>

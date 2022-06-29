@@ -44,7 +44,8 @@ router.get(router.version + '/models/:modelID/objects', router.requires_auth, as
         {
             mode,
             limit: 20,
-            order: 'newest_first'
+            order: 'newest_first',
+            read_level: req.user.read_level,
         }
     )
 
@@ -92,6 +93,7 @@ router.post(router.version + '/models/:modelID/objects', router.requires_auth, a
 
     req.body.metadata = {
         userID: req.user.id,
+        published: false,
         created_at: new Date().toISOString()
     }
 
@@ -129,6 +131,39 @@ router.post(router.version + '/models/:modelID/objects/:objectID', router.requir
 
     res.body = {
         success: true
+    }
+})
+
+// UPDATE AN OBJECTS STATE
+router.post(router.version + '/models/:modelID/objects/:objectID/state', router.requires_auth, async (req, res) => {
+    const tbl = new Table(
+        req.user.id,
+        req.params.modelID
+    )
+
+    const object = await tbl.get(
+        'id',
+        req.params.objectID
+    )
+
+    if (req.body.published) {
+        object.metadata.published = true
+        object.metadata.published_at = new Date().toISOString()
+    } else {
+        object.metadata.published = false
+        object.metadata.published_at = null
+    }
+
+    await tbl.update(
+        req.params.objectID,
+        {
+            metadata: object.metadata
+        }
+    )
+
+    res.body = {
+        success: true,
+        published: object.metadata.published
     }
 })
 

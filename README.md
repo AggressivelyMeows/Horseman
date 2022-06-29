@@ -30,7 +30,7 @@ API documentation can be found here: https://horseman.stoplight.io/docs/horseman
 ## 🔧 Setting up
 What you'll need:
 - A machine with Wrangler 2
-- A paid Workers subscription ($5 a month, used for the password hashing Worker)
+- A paid Workers subscription ($5 a month, used for the password hashing Worker & DurableObjects)
 - A setup, working password hashing Worker: (https://github.com/AggressivelyMeows/password-hashing)
 - Please read the README to get the passowrd hashing Worker setup correctly.
 
