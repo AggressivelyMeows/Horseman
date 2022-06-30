@@ -3,199 +3,206 @@
 @tailwind utilities;
 
 .mdi {
-    /*
-        Yay, love me some Material Design Icon fuckery.
-        For whatever reason, the icons are not centered in their respective I tags.
-    */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    @apply opacity-75 text-xs;
+	/*
+		Yay, love me some Material Design Icon fuckery.
+		For whatever reason, the icons are not centered in their respective I tags.
+	*/
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	@apply opacity-75 text-xs;
 }
 
 .mdi-24px.mdi-set, .mdi-24px.mdi::before {
-    font-size: 1.4em;
+	font-size: 1.4em;
 }
 
 .o-inputit__item {
-    @apply flex flex-row items-center justify-center;
+	@apply flex flex-row items-center justify-center;
 }
 
 .button {
-    @apply border-none;
+	@apply border-none;
 }
 
 .heading {
-    @apply text-3xl font-bold text-primary-500
+	@apply text-3xl font-bold text-primary-500
 }
 
 .o-field__message {
-    @apply text-xs text-gray-400 mt-2
+	@apply text-xs text-gray-400 mt-2
 }
 
 .subheading {
-    @apply font-medium text-gray-300 text-sm
+	@apply font-medium text-gray-300 text-sm
 }
 
 .o-field__label {
-    @apply mb-2 font-bold;
+	@apply mb-2 font-bold;
 }
 
 .o-input { 
-    @apply border-none rounded-md bg-gray-800 text-sm px-2 py-2 border-gray-700 focus:outline-none focus:border-primary-900 focus:ring-primary-600 focus:ring-1;
+	@apply border-none rounded-md bg-gray-800 text-sm px-2 py-2 border-gray-700 focus:outline-none focus:border-primary-900 focus:ring-primary-600 focus:ring-1;
 }
 
 .o-ctrl-sel {
-    @apply w-full
+	@apply w-full
 }
 
 .o-sel {
-    @apply w-full border-none rounded-md bg-gray-800 text-sm px-2 py-2 border-gray-700 focus:outline-none focus:border-primary-900 focus:ring-primary-600 focus:ring-1;
+	@apply w-full border-none rounded-md bg-gray-800 text-sm px-2 py-2 border-gray-700 focus:outline-none focus:border-primary-900 focus:ring-primary-600 focus:ring-1;
 }
 
 .o-inputit {
-    @apply rounded-md overflow-hidden border-none
+	@apply rounded-md overflow-hidden border-none
 }
 
 .o-inputit__container {
-    @apply border-none !important
+	@apply border-none !important
 }
 
 .o-inputit__item {
-    @apply bg-primary-600 rounded-md ml-0 mr-2 text-sm font-mono !important;
-    padding: 8px 4px!important
+	@apply bg-primary-600 rounded-md ml-0 mr-2 text-sm font-mono !important;
+	padding: 8px 4px!important
 }
 
 .o-inputit__input {
-    @apply text-gray-200
+	@apply text-gray-200
 }
 
 .o-chk__check {
-    @apply bg-gray-850 text-primary-600 rounded-md border-gray-700 focus:outline-none focus:border-primary-900 focus:ring-primary-600 focus:ring-1 !important 
+	@apply bg-gray-850 text-primary-600 rounded-md border-gray-700 focus:outline-none focus:border-primary-900 focus:ring-primary-600 focus:ring-1 !important 
 }
 
 .o-chk__check--checked {
-    @apply bg-primary-600 !important
+	@apply bg-primary-600 !important
 }
 
 .o-chk__label {
-    @apply ml-2 text-sm
+	@apply ml-2 text-sm
 }
 
 .o-modal__content {
-    /* Oruga does this as well, until i can figure out how to fix the priority issues with CSS, this will have to be it. */
-    @apply rounded-md overflow-hidden bg-gray-800 text-gray-200 max-w-lg p-4 !important
+	/* Oruga does this as well, until i can figure out how to fix the priority issues with CSS, this will have to be it. */
+	@apply rounded-md overflow-hidden bg-gray-800 text-gray-200 max-w-lg p-4 !important
 }
 
+.o-acp__menu {
+	@apply rounded-md overflow-hidden bg-gray-800 text-gray-200 !important
+}
+
+.o-acp__item {
+	@apply p-2 hover:bg-gray-850 hover:text-primary-500
+}
 
 .notif {
-    @apply p-2 px-3 rounded-md mb-3 mr-3 cursor-pointer
+	@apply p-2 px-3 rounded-md mb-3 mr-3 cursor-pointer
 }
 
 .notif.success {
-    @apply text-gray-200 bg-green-600
+	@apply text-gray-200 bg-green-600
 }
 
 .notif.warning {
-    @apply text-gray-200 bg-yellow-600
+	@apply text-gray-200 bg-yellow-600
 }
 
 .notif.error {
-    @apply text-gray-200 bg-red-600
+	@apply text-gray-200 bg-red-600
 }
 
 .notif.info {
-    @apply text-gray-200 bg-blue-600
+	@apply text-gray-200 bg-blue-600
 }
 
 .notification-content {
-    @apply text-sm
+	@apply text-sm
 }
 
 
 
 .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="serif"]::before, .ql-font-serif {
-    font-family: 'Merriweather', serif!important;
+	font-family: 'Merriweather', serif!important;
 }
 
 .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="monospace"]::before, .ql-font-monospace {
-    font-family: 'Source Code Pro', monospace!important;
+	font-family: 'Source Code Pro', monospace!important;
 }
 
 .ql-container {
-    height:unset!important;
-    @apply bg-gray-800
+	height:unset!important;
+	@apply bg-gray-800
 }
 
 .ql-toolbar.ql-snow {
-    /* We need to do important because CSS makes the editor CSS higher prio than our edits */
-    @apply border-none rounded-t-md mx-0 px-0 !important
+	/* We need to do important because CSS makes the editor CSS higher prio than our edits */
+	@apply border-none rounded-t-md mx-0 px-0 !important
 }
 
 .ql-container.ql-snow {
-    @apply border-none  rounded-md !important
+	@apply border-none  rounded-md !important
 }
 
 .ql-container {
-    font-family: "Inter var", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"!important;
+	font-family: "Inter var", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"!important;
 }
 
 .ql-formats {
-    @apply mr-2 !important
+	@apply mr-2 !important
 }
 
 .ql-formats > * {
-    @apply text-gray-200 mr-1 !important 
+	@apply text-gray-200 mr-1 !important 
 }
 
 .ql-picker-label {
-    @apply rounded-md bg-gray-800 border-none  !important
+	@apply rounded-md bg-gray-800 border-none  !important
 }
 
 .ql-active {
-    @apply rounded-md bg-gray-900 text-gray-200 !important
+	@apply rounded-md bg-gray-900 text-gray-200 !important
 }
 
 .ql-snow.ql-toolbar button.ql-active, .ql-snow .ql-toolbar button.ql-active, .ql-snow.ql-toolbar .ql-picker-label.ql-active, .ql-snow .ql-toolbar .ql-picker-label.ql-active, .ql-snow.ql-toolbar .ql-picker-item.ql-selected, .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
-    @apply text-primary-500 !important
+	@apply text-primary-500 !important
 }
 
 .ql-snow.ql-toolbar button:hover, .ql-snow .ql-toolbar button:hover, .ql-snow.ql-toolbar button:focus, .ql-snow .ql-toolbar button:focus, .ql-snow.ql-toolbar .ql-picker-label:hover, .ql-snow .ql-toolbar .ql-picker-label:hover, .ql-snow.ql-toolbar .ql-picker-item:hover, .ql-snow .ql-toolbar  {
-    @apply bg-gray-900 rounded-md !important
+	@apply bg-gray-900 rounded-md !important
 }
 
 .ql-snow.ql-toolbar button.ql-active, .ql-snow .ql-toolbar button.ql-active, .ql-snow.ql-toolbar .ql-picker-label.ql-active, .ql-snow .ql-toolbar .ql-picker-label.ql-active, .ql-snow.ql-toolbar .ql-picker-item.ql-selected, .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
-    @apply bg-primary-500/10 !important
+	@apply bg-primary-500/10 !important
 }
 
 .ql-editor {
-    @apply prose prose-invert prose-headings:font-bold prose-headings:mb-2 max-w-full w-full
+	@apply prose prose-invert prose-headings:font-bold prose-headings:mb-2 max-w-full w-full
 }
 
 .ql-snow .ql-picker-options {
-    @apply bg-gray-800 !important
+	@apply bg-gray-800 !important
 }
 
 .ql-editor.ql-blank::before {
-    @apply text-gray-600 font-medium !important
+	@apply text-gray-600 font-medium !important
 }
 
 .ql-picker-options {
-    @apply rounded-md overflow-hidden border-none !important
+	@apply rounded-md overflow-hidden border-none !important
 }
 
 .ql-picker-item:hover {
-    @apply bg-gray-900 !important
+	@apply bg-gray-900 !important
 }
 
 .ql-picker-options .ql-selected:not([data-value]) {
-    @apply bg-gray-900 text-primary-500 !important
+	@apply bg-gray-900 text-primary-500 !important
 }
 
 .ql-picker-item:not([data-value]) {
-    @apply bg-gray-800 !important
+	@apply bg-gray-800 !important
 }
 
 .ql-snow .ql-stroke {
-    @apply stroke-gray-200 !important
+	@apply stroke-gray-200 !important
 }
