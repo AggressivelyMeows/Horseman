@@ -16,6 +16,7 @@ API documentation can be found here: https://horseman.stoplight.io/docs/horseman
 - Caching API built in, smartly clears cache to ensure your data is always up to date world-wide. Also reduces read costs significantly so you dont have to worry about a sudden burst of requests killing your bill.
 - Wildcard searching built-in. Alongside other features such as cursors, Horseman can perform wildcard searching on any indexed field.
     - For example: `?Field=eq.Hello*` would find any Object with `Hello` in `Field`. Wildcards can go anywhere in the string.
+- Relationships to bind two Objects together. Add an Author to that Post without having to type them out every time.
 
 ## 🔥 Todo
 

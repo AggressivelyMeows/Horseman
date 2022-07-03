@@ -2,7 +2,7 @@ import { router } from '../../router.js'
 import { Table } from '../../lib/table.js'
 
 router.get(router.version + '/auth/@me', router.requires_auth, async (req, res) => {
-	delete req.user.password_hash
+
 
 	req.user.options = req.user.options || {} // polyfill, babeyy
 
@@ -12,8 +12,44 @@ router.get(router.version + '/auth/@me', router.requires_auth, async (req, res) 
 	}
 })
 
-router.post(router.version + '/auth/signup', async (req, res) => {
+router.post(router.version + '/auth/password-fix', router.requires_auth, async (req, res) => {
+	const hash_resp = await env.PASSWORD_HASHING.fetch('https://hash.com/v1/hash', {
+		method: 'POST',
+		headers: { 'Authorization': env.PASSWORD_HASHER_KEY, 'content-type': 'application/json' },
+		body: JSON.stringify({
+			password: req.body.password
+		})
+	}).then(r => r.json())
 
+	if (!hash_resp.success) {
+		res.body = {
+			success: false,
+			error: `We're sorry, there was an issue with the password hashing service. Please try again later.`
+		}
+		res.status = 500
+		return
+	}
+
+	const hashed_password = hash_resp.hash
+
+	const acc = new Table(
+		'internal',
+		'accounts'
+	)
+
+	await acc.update(
+		req.user.id,
+		{
+			password_hash: hashed_password
+		}
+	)
+	
+	res.body = {
+		success: true
+	}
+})
+
+router.post(router.version + '/auth/signup', async (req, res) => {
 	if (!env.ALLOW_SIGNUPS) {
 		res.body = {
 			success: false,
@@ -23,6 +59,11 @@ router.post(router.version + '/auth/signup', async (req, res) => {
 		res.status = 403
 		return
 	}
+
+	const acc = new Table(
+		'internal',
+		'accounts'
+	)
 
 	const data = req.body
 
@@ -35,20 +76,35 @@ router.post(router.version + '/auth/signup', async (req, res) => {
 		return
 	}
 
+	if (await acc.get('email', data.email)) {
+		res.body = {
+			success: false,
+			error: 'Email already in use'
+		}
+		res.status = 400
+		return
+	}
+
 	const hash_resp = await env.PASSWORD_HASHING.fetch('https://hash.com/v1/hash', {
 		method: 'POST',
 		headers: { 'Authorization': env.PASSWORD_HASHER_KEY, 'content-type': 'application/json' },
 		body: JSON.stringify({
 			password: req.body.password
 		})
-	})
+	}).then(r => r.json())
 
-	const hashed_password = (await hash_resp.json()).hash
+	if (!hash_resp.success) {
+		res.body = {
+			success: false,
+			error: `We're sorry, there was an issue with the password hashing service. Please try again later.`
+		}
+		res.status = 500
+		return
+	}
 
-	const acc = new Table(
-		'internal',
-		'accounts'
-	)
+	const hashed_password = hash_resp.hash
+
+
 
 	const account = await acc.put({
 		'email': data.email,
@@ -88,6 +144,16 @@ router.post(router.version + '/auth/login', async (req, res) => {
 		data.email
 	)
 
+	if (!existing) {
+		res.body = {
+			success: false,
+			error: 'No account found with that email address.',
+			code: 'NO_ACCOUNT'
+		}
+		res.status = 403
+		return
+	}
+
 	const resp = await env.PASSWORD_HASHING.fetch('https://hash.com/v1/compare', {
 		method: 'POST',
 		headers: { 'Authorization': env.PASSWORD_HASHER_KEY, 'content-type': 'application/json' },
@@ -96,6 +162,8 @@ router.post(router.version + '/auth/login', async (req, res) => {
 			hash: existing.password_hash
 		})
 	}).then(resp => resp.json())
+
+	console.log(resp)
 
 	if (!resp.is_same) {
 		res.body = {

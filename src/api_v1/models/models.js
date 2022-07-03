@@ -78,6 +78,8 @@ router.post(router.version + '/models', router.requires_auth, async (req, res) =
 		type: 'string',
 		index: true
 	})
+	
+	req.body.title = req.body.title ||req.body.id
 
 	const model = await tbl.put({
 		id: slugify(req.body.title, '-').toLowerCase(),
@@ -169,8 +171,6 @@ router.delete(router.version + '/models/:modelID', router.requires_auth, async (
 			prefix: tbl.get_kv_prefix()
 		})
 	).keys.map(k => k.name)
-
-	console.log(idx_keys, object_keys)
 
 	await Promise.all([
 		Promise.all(idx_keys.map(k => env.INDEXKV.delete(k))),

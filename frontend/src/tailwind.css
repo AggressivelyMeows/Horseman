@@ -45,6 +45,10 @@
 	@apply border-none rounded-md bg-gray-800 text-sm px-2 py-2 border-gray-700 focus:outline-none focus:border-primary-900 focus:ring-primary-600 focus:ring-1;
 }
 
+.o-input--dark {
+	@apply bg-gray-900 !important
+}
+
 .o-ctrl-sel {
 	@apply w-full
 }

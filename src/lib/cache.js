@@ -22,6 +22,11 @@ export class Cache {
 			
 			res = value
 
+			if (res === null) {
+				// Dont cache a null value
+				return null
+			}
+
 			await this.write(
 				id,
 				value
@@ -41,6 +46,8 @@ export class Cache {
 			opt
 		)
 
+		console.log(`[CACHEdasdasdasdasdasdasdsadasdasdasdasdasda] Writing ${id}`)
+
 		let cache = caches.default
 		const req = new Request(`https://ceru.dev/cache/${id}`)
 		const res = new Response(
@@ -56,6 +63,8 @@ export class Cache {
 	async delete(id) {
 		let cache = caches.default
 		const req = new Request(`https://ceru.dev/cache/${id}`)
+
+		console.log(`[CACHEasdasdasdasdasdasdasdsadas] Deleting ${id}`)
 
 		//ctx.waitUntil(async () => {
 		await new Promise(r => setTimeout(r, 750))

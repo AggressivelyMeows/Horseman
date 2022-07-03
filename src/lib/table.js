@@ -6,6 +6,7 @@
 import { nanoid } from 'nanoid'
 import wcmatch from 'wildcard-match'
 import { Cache } from './cache.js'
+import { ServerTiming } from './timing.js'
 
 export class Table { 
 	constructor (userID, table) {
@@ -103,12 +104,20 @@ export class Table {
 	}
 
 	async get(index, search) {
+		const timer = new ServerTiming(
+			'object-get',
+			`${index}:${search}`
+		)
+
 		if (index == 'id') {
 			// no need for an index
-			return await this.cache.read(`${this.get_kv_prefix()}:${search}`, async () => {
+			const obj = await this.cache.read(`${this.get_kv_prefix()}:${search}`, async () => {
 				increase_cost('read')
 				return await env.CONTENTKV.get(`${this.get_kv_prefix()}:${search}`, { type: 'json',  })
 			})
+
+			timer.finish()
+			return obj
 		}
 
 		const key = `${this.get_kv_prefix()}:${index}:index`
@@ -124,10 +133,16 @@ export class Table {
 
 		const first = idx.find(x => x[0] == search)
 
+		if (!first) {
+			return null
+		}
+
 		const object = await this.cache.read(`${this.get_kv_prefix()}:${first[1]}`, async () => {
 			increase_cost('read')
 			return await env.CONTENTKV.get(`${this.get_kv_prefix()}:${first[1]}`, { type: 'json' })
 		})
+
+		timer.finish()
 
 		return object
 	}
@@ -335,11 +350,19 @@ export class Table {
 				return kx[1]
 			}
 
+			console.log(kx)
+
 			// if we're resolving, we need to get the object
 			const obj = await this.get(
 				'id',
 				kx[1]
 			)
+
+			console.log(obj)
+
+			if (!obj) {
+				return null
+			}
 
 			// if the object is from before we added the publish field
 			// bypass the check and return it

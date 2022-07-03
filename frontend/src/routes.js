@@ -7,6 +7,7 @@ export const routes = [
 	{ path: '/signup', component: () => import('./views/auth/signup.vue') },
 	{ path: '/login', component: () => import('./views/auth/login.vue') },
 	{ path: '/dashboard', component: () => import('./views/dashboard/base.vue'), children: [
+		{ path: '/dashboard/presets', component: () => import('./views/dashboard/presets.vue') },
 		{ path: '/dashboard/models', component: () => import('./views/dashboard/models/list.vue')},
 		{ path: '/dashboard/models/:modelID', component: () => import('./views/dashboard/models/edit.vue')},
 		{ path: '/dashboard/access/keys', component: () => import('./views/dashboard/keys/list.vue')},

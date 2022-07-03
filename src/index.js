@@ -1,11 +1,13 @@
 import { router } from './router.js'
 import { captureError } from '@cfworker/sentry'
+import { all_timers } from './lib/timing.js'
 
 export { WriterDO } from './lib/writer.mjs'
 
 import './api_v1/auth/accounts.js'
 import './api_v1/models/models.js'
 import './api_v1/models/content.js'
+import './api_v1/models/presets.js'
 // import './api_v1/models/graphql.js'
 import './init.js'
 
@@ -33,10 +35,9 @@ export default {
 			console.log(l)
 			log.push(l)
 		}
-
 		
 		router.corsConfig.allowOrigin = '*'
-		router.corsConfig.allowHeaders = 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Content-Length, x-cost, x-log'
+		router.corsConfig.allowHeaders = 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Content-Length, x-cost, x-log, Server-Timing'
 
 		let resp
 
@@ -60,7 +61,6 @@ export default {
 
 		response.headers.set('X-Cost', JSON.stringify(cost))
 		response.headers.set('X-Log', JSON.stringify(log))
-
 		response.headers.set('Access-Control-Expose-Headers', router.corsConfig.allowHeaders)
 
 		return response

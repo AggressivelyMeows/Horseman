@@ -6,6 +6,9 @@
 			</b>
 			 
 			<div class="space-y-2 mt-2">
+				<router-link to="/dashboard/presets" class="button w-full bg-gray-850 justify-start px-4 py-2 font-medium" active-class="bg-gray-900 text-primary-500">
+					Getting started
+				</router-link>
 				<router-link to="/dashboard/models" class="button w-full bg-gray-850 justify-start px-4 py-2 font-medium" active-class="bg-gray-900 text-primary-500">
 					Models
 				</router-link>
@@ -58,6 +61,7 @@
 		}),
 		methods: {
 			init() {
+				console.log('Loading models')
 				this.loading_models = true
 				this.$api.get('/models').then(resp => {
 					this.models = resp.data.results

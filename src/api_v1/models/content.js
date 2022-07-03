@@ -263,6 +263,7 @@ router.delete(router.version + '/models/:modelID/cache', router.requires_auth, a
 	)
 
 	await Promise.all(keys.map(async x => {
+		console.log(`${tbl.get_kv_prefix()}:${x}`)
 		return tbl.cache.delete(`${tbl.get_kv_prefix()}:${x}`)
 	}))
 
