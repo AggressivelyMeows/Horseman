@@ -49,6 +49,26 @@ router.get(router.version + '/models/:modelID/objects', router.requires_auth, as
 		}
 	)
 
+	models = models.map(x => {
+		let new_obj = Object.assign({}, x)
+
+		Object.keys(x).map(field_key => {
+			const field = spec.find(field => field.name.toLowerCase() == field_key.toLowerCase())
+
+			if (field) {
+				if (field.type == 'html') {
+					new_obj[field_key] = new_obj[field_key].replaceAll('<p><br></p>', '<br/>')
+				} else {
+					new_obj[field_key] = new_obj[field_key]
+				}
+			} else {
+				new_obj[field_key] = new_obj[field_key]
+			}
+		})
+
+		return new_obj
+	})
+
 	if ('expand' in req.query) {
 		const expand = req.query.expand.split(',')
 

@@ -125,6 +125,30 @@
 
 
 
+.ql-syntax {
+	@apply bg-gray-900 p-2 !important;
+}
+
+.ql-html-textArea {
+	@apply bg-transparent !important;
+}
+
+.ql-html-textArea > .ql-editor {
+	@apply p-0 pt-2 !important
+}
+
+.ql-html-popupContainer {
+	@apply bg-gray-800 text-gray-200 !important
+}
+
+.ql-html-buttonCancel {
+	@apply bg-red-600 text-white font-medium p-2 rounded-md text-xs !important;
+}
+
+.ql-html-buttonOk {
+	@apply bg-green-600 text-white font-medium p-2 rounded-md text-xs !important;
+}
+
 .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="serif"]::before, .ql-font-serif {
 	font-family: 'Merriweather', serif!important;
 }
@@ -165,6 +189,10 @@
 
 .ql-active {
 	@apply rounded-md bg-gray-900 text-gray-200 !important
+}
+
+.ql-snow.ql-toolbar button {
+	@apply bg-gray-800 rounded-md flex items-center justify-center !important
 }
 
 .ql-snow.ql-toolbar button.ql-active, .ql-snow .ql-toolbar button.ql-active, .ql-snow.ql-toolbar .ql-picker-label.ql-active, .ql-snow .ql-toolbar .ql-picker-label.ql-active, .ql-snow.ql-toolbar .ql-picker-item.ql-selected, .ql-snow .ql-toolbar .ql-picker-item.ql-selected {

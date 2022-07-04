@@ -52,6 +52,7 @@
 							theme="snow"
 							contentType="html"
 							:toolbar="toolbar"
+							:modules="modules"
 							v-model:content="object[element.name]"
 							placeholder="Start typing your content here!"
 						/>
@@ -75,6 +76,16 @@
 	import slugify from 'slugify'
 	import { QuillEditor } from '@vueup/vue-quill'
 	import '@vueup/vue-quill/dist/vue-quill.snow.css'
+	import htmlEditButton from "quill-html-edit-button"
+
+
+    const modules = {
+		name: 'htmlEditButton',
+		module: htmlEditButton,
+		options: {
+			debug: true
+		},
+    }
 
 	const toolbar = [
 		[
@@ -90,8 +101,7 @@
 		
 		[{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
 
-
-		['clean']
+		['clean'],
 	]
 
 	function array_move(arr, old_index, new_index) {
@@ -110,6 +120,7 @@
 			loading: false,
 			loading_message: '',
 			toolbar,
+			modules,
 			object: {},
 			model: {
 				id: 'new',
