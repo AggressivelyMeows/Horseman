@@ -13,7 +13,7 @@
 				Your data,<br class="block md:hidden mr-2"/><span class="ml-0 md:ml-1">unbound</span>
 			</h1>
 			<h3 class="text-center text-xl font-medium text-gray-200 mt-2 font-mono md:mb-24">
-				The database thats only 50ms from your users, worldwide. <br> Built for the next generation of apps.
+				The database thats only 150ms from your users, worldwide. <br> Built for the next generation of apps.
 			</h3>
 		</div>
 
@@ -45,10 +45,10 @@
 			</div>
 			<div class="px-8">
 				<h5 class="stat-label">
-					50ms latency
+					Low latency
 				</h5>
 				<p class="stat-body">
-					Using our API, your data is only 50ms from your users, no matter where they are in the world.
+					Using our API, your data is only 150ms average from your users, no matter where they are in the world.
 				</p>
 			</div>
 			<div class="px-8">
