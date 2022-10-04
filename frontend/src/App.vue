@@ -3,26 +3,27 @@
 		<header class="bg-gray-800 py-5 px-8">
 			<div class="container mx-auto text-primary-500 flex flex-row items-center">
 				<router-link to="/" class="font-extrabold text-2xl flex flex-row items-center">
-					<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-						<path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 mr-2">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M6.429 9.75L2.25 12l4.179 2.25m0-4.5l5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L21.75 12l-4.179 2.25m0 0l4.179 2.25L12 21.75 2.25 16.5l4.179-2.25m11.142 0l-5.571 3-5.571-3" />
 					</svg>
+
 					<div class="flex flex-col justify-start">
 						Horseman
 						<span class="text-gray-400 text-xs font-medium" style="margin-top: -3px;">
-							v1.0 - BETA
+							The headless CMS
 						</span>
 					</div>
 				</router-link>
 
-				<div class="flex flex-col text-xs text-gray-400 ml-4 hidden md:block">
+				<div class="flex flex-col text-[9px] tracking-wider text-gray-400 font-medium ml-4 hidden md:block">
 					<p>Reads: {{$api.state.reads}}</p>
 					<p>Writes: {{$api.state.writes}}</p>
 					<p>Cache hits: {{$api.state.cache_hits}}</p>
 				</div>
 
 				<div class="flex-grow"></div>
-				<div v-if="!$api.state.user">
-					<router-link class="button ~primary @high mr-2 text-sm py-1 px-3" to="/signup">
+				<div v-if="!$api.state.user" class="flex flex-col md:flex-row">
+					<router-link class="button ~primary @high md:mr-2 text-sm py-1 px-3" to="/signup">
 						Sign up
 					</router-link>
 					<router-link class="button ~gray bg-gray-900 text-sm text-gray-200 py-1 px-3" to="/login">

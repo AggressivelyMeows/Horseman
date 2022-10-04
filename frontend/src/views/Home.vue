@@ -1,96 +1,184 @@
 <template>
-	<div class=" py-12 bg-cover bg-top overflow-hidden rounded-md">
+	<div class=" bg-cover bg-top overflow-hidden rounded-md">
+		<div class="relative flex flex-col items-center justify-center px-4 shadow-xl rounded-md bg-gradient-to-b from-transparent to-purple-500/20 py-24 md:py-16 md:h-[600px]">
+			<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 504 504" class="text-white w-24 h-24 absolute top-0 mt-16">
+				<path fill="currentColor" d="M333 448h-5c-13 0-20 6-23 8l-5 5c-7 5-10 8-9 11 0 1 1 4 5 4l3-1c1 0 41-12 40-22 0-1 0-4-6-5zm-24 15 2-1c2-2 7-6 16-6l-18 7zm184-150h-3c-2-1-7-4-11-11-1-3-6-10-12-13-3-1-7 0-10 2h-1l-2-4c-1-4-3-8-7-8-4-1-7 1-8 2-3 3-3 9 0 18 2 5 4 10 9 12 3 2 7 1 11-1 0 0 1-1 2 1 4 2 7 10 6 14-3 8-32 27-50 28-8 1-10-3-10-4-3-6-2-18-1-30 1-25 3-57-24-59-1 0-5 0-7 3s0 6 2 11c5 11 15 34 5 79-1 6 0 12 3 16 6 8 19 10 27 11v1c1 3-5 11-29 13-14 1-30 12-48 24-25 17-54 36-86 36-8 0-11-6-11-9-3-7-1-17 6-23 5-4 12-22 10-35-2-9-7-13-12-15v-9c1-7 3-16-5-19l-7-2c-8-1-13-2-14-13-1-16-13-18-29-20l-18-4c-9-1-15-6-19-15-5-12-3-30 2-38 11-18 26-25 37-29 9-4 10-11 11-16 1-3 1-5 3-7 3-4 9-8 13-10l7-5c4-6 0-10-4-13-1-1-3-7-3-14 0-4 2-12 7-16 5-5 6-3 12 0l6 4c4 1 8 2 11 0 5-2 6-7 7-11 2-5-2-8-5-11l-3-3 5 1c6 1 13 0 16-4v-1l1 1c4 2 8 0 13-3 5-2 10-4 14-4 4 1 6 0 8-2 2-3 0-7-1-10l-1-1v-1l2-1c3 0 6-2 7-5v-5c-2-3-6-2-8-2-1 0-3 0-5-2-1-1-2-2-1-4 0-5 6-6 13-6h2l8-2c7-3 19-6 29-4 6 1 16 6 24 10 12 6 19 10 24 9 2 0 4 0 6-2v1c0 5 5 10 14 12 5 1 7-2 9-3h1c1 1 3 1 5-1l2-3h1a4 4 0 0 0-3-7c-1 0-2 0-4 3-4-1-6 1-8 2l-2 1c-4-1-6-3-7-4 2-1 3-3 3-5s-2-5-5-7c-4-3-8-3-12-1l-3 4v2l-17-8c-9-5-19-10-27-11-12-3-24 1-32 4l-7 2h-2c-6 0-19 2-20 12-1 5 0 9 4 12l4 3-1 1c-2 2-2 5-2 8l2 3a39 39 0 0 0-18 6l1-5c0-4-2-8-7-13l-3-3v-1c3-4 4-8 1-13-3-4-15-5-21-2-3 1-5 5-4 8l1 1h-4c-8 2-13 6-15 12-1 4 1 8 3 10 4 3 8 3 12 1l-2 6 2 3-3 2c-4 6 2 12 5 15l4 3-3 6-4-1-6-3c-6-4-12-8-22 1-8 7-9 18-9 24s2 14 5 18h1l2 2-4 3c-5 3-12 7-15 12-3 3-4 7-4 10-1 5-2 8-8 10-10 5-28 12-40 32-6 11-9 31-2 47 5 10 13 17 24 19l19 4c17 2 22 3 22 13 1 16 13 19 21 20l6 2v9c-1 7-3 16 5 19 3 1 5 3 6 7 2 11-5 27-7 29-11 8-12 22-9 32 3 9 10 14 19 14 35 0 64-20 90-37 18-12 33-22 45-23 27-3 37-13 36-21 0-5-3-9-8-9-10-1-17-3-21-8-1-2-2-5-1-9 11-48-1-74-6-85l-1-1c16 2 16 22 15 49-1 14-2 27 1 34 2 5 7 10 19 9 19-1 53-21 56-34 2-7-1-18-8-23-3-3-7-3-11-1l-4 1c-1 0-3-2-4-8-3-7-2-9-2-10l2 4c1 3 3 7 7 9l7-1 4-1c2 1 5 4 7 8 7 15 18 16 19 16 2 1 4-1 4-3 1-2 0-5-2-5zM256 106c3-1 8-6 9-11a7 7 0 0 0-5-8l-2-6-1-2c3-1 9 0 11 1l-2 2c-4 7 1 12 4 15 5 5 5 7 5 7l-2 2-3 4c-2-1-6-2-14-2h-3l3-2zm-17-10v-1c1-2 3-5 9-6l1 1 2 1-1 1c-5 5-8 6-11 4z"/>
+				<path fill="currentColor" d="M252 0a252 252 0 1 0 1 505 252 252 0 0 0-1-505zm0 496a244 244 0 1 1 1-489 244 244 0 0 1-1 489z"/>
+				<path fill="currentColor" d="m150 40-3-2-2-4c-2-3-6-2-11-1l-2 1a4 4 0 0 0 1 8v2c0 1 0 3 3 4l-3 4c-3 3-4 11-3 12-1 2-3 6-6 8l-1 1-4 3c-2-2-5-2-6-2-5 1-7 3-7 6-3-1-5-2-7 1l-1 1c-2 2-7 9-5 13l2 2a27 27 0 0 1-11 3h-8c-5 2-10 7-14 12l-4 4c-3 1-4 4-7 7l-7 9-6 12-4 6c-7 4-13 13-15 21l-1 7-2 5c-2 0-4 2-4 3v1a4 4 0 0 0 4 5l6-3 4-10 1-6c2-7 6-14 10-16 5-2 6-6 8-10l5-10 8-9 4-5 5-6 12-9 2-1h7c7-1 13-4 17-10h2l2 1 5 1c6-2 12-11 14-14 2-2 4-5 2-7 4-4 8-10 7-14l2-7 4-5 6-6c2-2 2-4 1-6zm-37 51-3-1 2-2 6-5 1 1-6 7zm347 112-4-8c4-1 6-4 6-7 0-4-4-8-9-8l-5-1c-4 0-8 1-10 4-1 2-2 5-1 9l5 15c3 6 5 12 4 15v2c-2 6-4 11 5 17l6 2c6 0 10-6 12-16 1-6-4-16-9-24zm1 23c-1 6-3 9-4 9l-2-1c-4-2-4-2-2-8l1-2c2-5-1-12-4-20l-5-14v-2l3-1h3l-3 2c-2 4 1 9 5 18 4 6 9 15 8 19zm-50-49-8-1c-5 0-7 0-9-2-4-5-8-10-15-10l-4 1c-7 2-11 10-11 17s4 12 11 13c6 2 10 1 13 0h2l3 1 8 5c5 4 10 7 14 7h1c6-1 9-9 9-16 0-8-6-14-14-15zm4 23-9-5-10-6-6-2-4 1h-10c-1-1-4-1-4-6 0-4 2-9 5-9 4-1 6 0 11 6 4 5 10 5 15 5l7 1c4 0 6 2 6 5 2 4 0 9-1 10zm-37 18c-1 0-15 0-15-9v-5c0-5 1-11-2-14-1-1-3-3-6-3-9 0-10 9-10 14l-1 5h-1l-3-1-1-4c0-13-1-23-3-27-7-21-15-24-19-24l-6 2c-5 4 0 12 7 22l7 11c-2 3-5 4-6 4l-5-11c-2-5-4-11-7-14-3-5-13-15-23-15l-6 1c-3 1-4 3-5 5l-2 2-2-1c-9-3-14-2-17 1s-3 6-3 9v3c1 3 1 4-3 5l-9 1c-5 0-10 0-12 5-1 3 0 6 1 7 2 3 6 4 13 4 21 0 35 2 42 5 6 3 7 7 7 11 0 11 11 14 17 15l6 2c0 5 1 10 4 14 4 4 9 5 13 2 3-2 4-5 5-6l3-3c8 0 16 6 22 11s11 10 17 10c7 0 11-3 14-6s4-7 4-11c0-8-5-17-15-17zm-54-49-6-10c2 1 6 5 10 16l-4-6zm59 72c-2 2-5 3-8 3s-8-4-12-8c-7-6-16-13-27-13-5 0-8 4-9 6l-4 4h-2l-2-8c2-7-6-9-11-10-8-2-12-4-12-8 0-5-1-13-11-18a115 115 0 0 0-50-6h3l9-1c12-3 11-11 10-14v-2l1-4s1-1 8 2l5 1c4 0 7-3 8-5l3-3c5-2 14 5 19 12l6 12c4 9 6 14 10 15 4 2 9-1 13-6l1 11c0 5 2 8 3 10l9 3 6-1c3-2 3-7 4-11l2-7v14c0 12 12 17 23 17 5 0 7 5 7 9 0 2 0 4-2 6z"/>
+				<path fill="currentColor" d="M319 196c-2-5-8-9-14-9-4 0-7 3-8 7-1 6 1 9 3 11 2 3 5 4 9 4l5-1c6-4 6-10 5-12zm-9 5h-1l-3-1-1-5c3 0 6 2 6 4 1 1-1 2-1 2zM256 60a25 25 0 0 0-23-5c-2 0-7 3-7 8 0 2 1 5 8 6l14 2c6 0 10-2 10-6l-2-5zm-19 2 8 1-8-1z"/>
+				<path fill="currentColor" d="M277 46c-5-2-10-2-16-2l-14-3-2-3c-1-3-4-8-13-9l-7-1h-9c-6 1-10 5-12 7l-1 1c-2 1-2 3-2 4l-9 3-12 4-2 1c-7 5-12 8-12 12l2 5c2 2 5 3 9 3l9-2a160 160 0 0 1 55-9c39-2 39-2 40-7 0-1-1-3-4-4zm-37 3-22 2c-12 1-29 5-35 8l-7 1 6-5 3-2 8-3c4 0 7-1 11-3 3-1 7-2 7-6v-2l6-3h6l9 1c4 0 5 2 6 5l3 4 4 3h-5z"/>
+			</svg>			
 
-		<div class="absolute top-[88px] left-0 w-full h-[200px] bg-gradient-to-b from-primary-500/10 via-transparent to-transparent"></div>
-
-		<div class="relative mx-auto">
-			<div class="flex flex-col items-center">
-				<div class="flex flex-col items-center justify-center" style="width: 100%; max-width: 600px; aspect-ratio: 1 / 1; /*! margin: auto; */ position: relative;">
-					<h1 class="mx-auto" style="font-size: min(8vw, 3em); font-weight: 700; top: calc(50% - 0.8em); margin: auto; z-index: 1; letter-spacing: 0.3em; text-indent: 0.3em; text-align: center; color: rgb(255, 255, 255); pointer-events: none; user-select: none; position: absolute;">
-						🐴
-						<br/>HORSEMAN
-					</h1>
-
-					<canvas :style="{ width: '600px', height: '600px' }" class="mx-auto" ref="el" id="cobe"></canvas>
-				</div>
-			</div>
+			<h1 class="font-extrabold text-transparent text-6xl bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 text-center md:text-left mt-24 md:mt-0">
+				Your data,<br class="block md:hidden mr-2"/><span class="ml-0 md:ml-1">unbound</span>
+			</h1>
+			<h3 class="text-center text-xl font-medium text-gray-200 mt-2 font-mono md:mb-24">
+				The database thats only 50ms from your users, worldwide. <br> Built for the next generation of apps.
+			</h3>
 		</div>
 
-		<div class="mt-[-8rem] md:mt-[-12rem] sm:mb-[6rem] md:mb-[12rem] z-10 relative">
-			<h4 class="text-xl text-center font-bold text-gray-300">
-				Headless CMS, everywhere, all at once.
+		<div class="mt-8 md:mt-[-14rem] relative z-[1]">
+			<img
+				class="shadow-xl mx-auto h-[100%] md:h-[600px] object-contain rounded-md"
+				src="https://nyc3.digitaloceanspaces.com/cerulean/screenshots/2022/10/firefox_rjlOfopsTR.png"
+				style="mask-image: linear-gradient(to bottom, rgba(0,0,0,1),rgba(0,0,0,1), rgba(0,0,0,0));"
+			/>
+		</div>
+
+		<div class="py-12 px-4 mt-14">
+			<h4 class="text-white text-center font-bold text-4xl">
+				Scale your ability to innovate.
 			</h4>
+			<p class="text-center text-gray-200 text-lg mt-2 px-0 md:px-48">
+				With Horseman, you can build apps that scale to millions of users, with a database that can handle it. Taking advantage of a global network of data centers, you can build apps and services that are fast, reliable, and secure. All from a single dashboard and API.
+			</p>
 		</div>
 
-		<div class="py-24 px-8 z-20 relative">
-			<div class="container mx-auto space-y-4">
-				<b class="text-primary-500 text-xl font-bold">What is Horseman, the Headless CMS?</b>
-				<h4 class="text-2xl font-bold text-gray-200">
-					Dev team's are on a never-ending hamster wheel of new projects and deliveries. Why not make your job easier?<br/>
-					<span class="text-gray-500">
-						Horseman gives you the tools to manage your content, without needing to write a single line of code. Just start writing and your data is avalible globally within seconds, all thanks to the power of modern web technologies. Backed by Cloudflare Workers™, Horseman is the most powerful and secure way to manage your content.
-						<br/><br/>
-						Dont settle for less, find out how we can make your experience legendary.
-						<span class="text-primary-500">Join Horseman today.</span>
-					</span>
-				</h4>
+		<div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 mt-16 mb-28">
+			<div class="px-8">
+				<h5 class="stat-label">
+					99.999% uptime
+				</h5>
+				<p class="stat-body">
+					With no single point of failure, you can be sure that your data will be available to your users.
+				</p>
+			</div>
+			<div class="px-8">
+				<h5 class="stat-label">
+					50ms latency
+				</h5>
+				<p class="stat-body">
+					Using our API, your data is only 50ms from your users, no matter where they are in the world.
+				</p>
+			</div>
+			<div class="px-8">
+				<h5 class="stat-label">
+					100% REST
+				</h5>
+				<p class="stat-body">
+					Our API has been designed to be simple and intuitive, so you can focus on building your app.
+				</p>
 			</div>
 		</div>
 
-		<div class="py-24 px-8 z-20 relative">
-			<div class="container mx-auto space-y-4">
-				<b class="text-primary-500 text-xl font-bold">How does Horseman work?</b>
-				<h4 class="text-2xl font-bold text-gray-200">
-					Around the world, theres 250+ locations where Horseman can exist.<br/>
-					<span class="text-gray-500">
-						Backed by Cloudflare's Workers and KV, Horseman does not rely on a single location for its storage. Meaning access to Horseman is just as fast globally. Alongside this, we have built a database system ontop of this key-value store, meaning you can store and retrieve data in a way that is easy to manage. With the Caching API, we can ensure that your data is always up to date yet cheap to access.
-						<br/><br/>
-						The headless CMS thats everywhere all at once.
-						<span class="text-primary-500">Join Horseman today.</span>
-					</span>
+		<div class="rounded-md my-20 px-8 py-12 bg-cover bg-center flex flex-col md:flex-row items-center justify-center shadow-lg" style="background-image:url(https://images.unsplash.com/photo-1620207418302-439b387441b0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1567&q=80)">
+			<h5 class="text-3xl text-white font-medium font-mono flex-grow">
+				One of the best databases I've ever used. Having a dashboard with this depth feels like cheating.<br/>I can't recommend it enough.
+				<br/>
+				<span class="font-bold mt-4 block text-sm italic">~ Tori, Software Engineer</span>
+			</h5>
+		</div>
+
+		<div class="py-12 px-4 mt-14">
+			<h4 class="text-white text-center font-bold text-4xl">
+				Built for developers, by developers.
+			</h4>
+			<p class="text-center text-gray-200 text-lg mt-2 px-0 md:px-48">
+				With our REST API, you can create modern apps without needing to worry about the underlying infrastructure. No more managing clusters, scaling up, or dealing with downtime. With Horseman, you can focus on building your app, and let us handle the rest.
+			</p>
+		</div>
+ 
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+			<div>
+				<h4 class="text-2xl font-bold font-mono text-primary-500">
+					CREATE
 				</h4>
+				<p class="font-mono text-gray-400">
+					POST /v1/models/<span class="text-blue-500">table</span>/objects?<span class="text-primary-500">key=abc123</span>
+				</p>
+			</div>
+			<div>
+				<h4 class="text-2xl font-bold font-mono text-primary-500">
+					LIST
+				</h4>
+				<p class="font-mono text-gray-400">
+					GET /v1/models/<span class="text-blue-500">table</span>/objects?<span class="text-primary-500">key=abc123</span>
+				</p>
+			</div>
+			<div>
+				<h4 class="text-2xl font-bold font-mono text-primary-500">
+					GET
+				</h4>
+				<p class="font-mono text-gray-400">
+					GET /v1/models/<span class="text-blue-500">table</span>/objects/<span class="text-green-500">objectID</span>?<span class="text-primary-500">key=abc123</span>
+				</p>
+			</div>
+			<div>
+				<h4 class="text-2xl font-bold font-mono text-primary-500">
+					EDIT
+				</h4>
+				<p class="font-mono text-gray-400">
+					POST /v1/models/<span class="text-blue-500">table</span>/objects/<span class="text-green-500">objectID</span>?<span class="text-primary-500">key=abc123</span>
+				</p>
+			</div>
+			<div>
+				<h4 class="text-2xl font-bold font-mono text-primary-500">
+					DELETE
+				</h4>
+				<p class="font-mono text-gray-400">
+					DELETE /v1/models/<span class="text-blue-500">table</span>/objects/<span class="text-green-500">objectID</span>?<span class="text-primary-500">key=abc123</span>
+				</p>
 			</div>
 		</div>
 
-		<div class="py-24 px-8 z-20 relative">
-			<div class="container mx-auto space-y-4">
-				<b class="text-primary-500 text-xl font-bold">What about Horseman in action?</b>
-				<h4 class="text-2xl font-bold text-gray-200">
-					Updates and news<br/>
-					<span class="text-gray-500">
-						This list is actually powered by Horseman itself!
-					</span>
-					<a href="https://horseman.ceru.dev/v1/models/horseman-news/objects?key=1uI0jPRNuMgM" target="_blank" class="text-gray-500 underline cursor-pointer">
-						Click here to see!
-					</a>
-				</h4>
+		<div class="py-24 px-8 z-20" v-show="false">
+			<div class="w-full md:grid grid-cols-2 gap-8">
+				<div class="p-4 rounded-md border-primary-500">
+					<h4 class="text-2xl font-bold text-gray-200 mb-2">
+						🚀 SQL Support
+					</h4>
 
-				<div class="divide-y-2 divide-gray-200 z-10 relative">
-					<div class="mt-2 pt-8 grid gap-16 lg:grid-cols-2 lg:gap-x-5 lg:gap-y-12">
-						<div v-for="article in news">
-							<p class="text-sm text-gray-500">
-								<time datetime="2020-03-16">{{new Date(article.metadata.created_at).toLocaleDateString()}}</time>
-							</p>
-							<a class="mt-2 block">
-								<p class="text-xl font-semibold text-gray-200">
-									{{article.Title}}
-								</p>
-								<p class="mt-3 text-base text-gray-500 prose prose-sm prose-invert" v-html="article.Content.replaceAll('<p><br></p>', '')">
-								</p>
-							</a>
-							<div class="mt-3">
-								<a href="#" class="text-base font-semibold text-primary-600 hover:text-primary-500">
-									Read full story (coming soon)
-								</a>
-							</div>
-						</div>
-					</div>
+					<p class="font-medium text-gray-100 mt-2">
+						SQL is just one way for you to access your data via Horseman. We have built in REST APIs, as well as a powerful SQL API. All over HTTP, allowing you to access your data in a way that is familiar to you.
+					</p>
+
+					<p class="font-medium text-sm text-gray-100 mt-2">
+						Hit Enter to see what results you'll get! You can query the "posts", "authors", and "news" tables.
+						We only support Horseman style wildcard searches inside the string, not LIKE queries. You can use the wildcard character '*' to search for anything. We also only support SELECT queries as of right now.
+					</p>
 				</div>
+				
+				<div class=" relative bg-primary-600/80 rounded-md p-4 mt-4 md:mt-0">
+					<input
+						v-model="sql_query"
+						@keyup.enter="query"
+						placeholder="SQL query"
+						aria-label="SQL query"
+						class="w-full h-auto bg-gray-850 mt-4 rounded-md text-white border-none rounded-md bg-gray-800 text-sm px-2 py-2 border-gray-700 focus:outline-none focus:border-primary-900 focus:ring-primary-600 focus:ring-1;"
+					/>
 
+					<p class="text-white text-sm font-medium mt-1">
+						Query execution time: {{query_latency.toFixed(0)}}ms
+					</p>
+
+					<table class="table text-white text-sm bg-gray-850 rounded-md mt-4">
+						<thead>
+							<tr >
+								<th v-for="heading in table_headings">{{heading}}</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="obj in table_rows">
+								<td v-for="heading in table_headings">
+									{{JSON.stringify(obj[heading]).substring(0, 60)}}
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 
-		
+		<div class="rounded-md bg-gray-800/40 my-20 px-8 py-12 bg-cover bg-center flex flex-col md:flex-row items-center justify-center shadow-lg">
+			<h5 class="text-3xl text-white font-medium font-mono flex-grow">
+				Get access to Horseman for free today by signing up now. 
+				<br/>
+				<router-link to="/signup" class="text-primary-500 font-medium">
+					Sign up
+				</router-link>
+
+			</h5>
+		</div>
 
 	</div>
 </template>
@@ -102,9 +190,31 @@
 		data: () => ({
 			news: [],
 			phi: 0,
+			sql_query: 'SELECT Title, Content, Tags FROM news',
+			query_latency: 0,
+			table_headings: [],
+			table_rows: []
 		}),
+		methods: {
+			query() {
+				this.table_headings = new Set()
+				this.table_rows = []
+
+				const start = Date.now()
+				this.query_latency = 0
+
+				fetch(`https://horseman.ceru.dev/v1/sql?key=PN-T6PeUK3ff&query=${this.sql_query}`).then(resp => resp.json()).then(data => {					
+					this.table_headings = Object.keys(data.results[0]).filter(x => x != 'metadata')
+					this.table_rows = data.results
+
+					this.query_latency = Date.now() - start
+				})
+			}
+		},
 		mounted() {
 			this.$nextTick(() => {
+				this.query()
+				return
 				let canvas = document.getElementById("cobe");
 				let phi = 0;
 
@@ -139,7 +249,16 @@
 	}
 </script>
 
-<style scoped>
+<style scoped lang="postcss">
+
+.stat-label {
+	@apply text-primary-500 text-center font-light font-mono text-3xl;
+}
+
+.stat-body {
+	@apply text-gray-200 font-medium mt-2 text-center;
+}
+
 .vimeo-wrapper {
    position: absolute;
    top: 0;
