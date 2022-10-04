@@ -20,7 +20,7 @@
 		<div class="mt-8 md:mt-[-14rem] relative z-[1]">
 			<img
 				class="shadow-xl mx-auto h-[100%] md:h-[600px] object-contain rounded-md"
-				src="https://nyc3.digitaloceanspaces.com/cerulean/screenshots/2022/10/firefox_rjlOfopsTR.png"
+				src="https://images.weserv.nl/?url=https://nyc3.digitaloceanspaces.com/cerulean/screenshots/2022/10/firefox_rjlOfopsTR.png"
 				style="mask-image: linear-gradient(to bottom, rgba(0,0,0,1),rgba(0,0,0,1), rgba(0,0,0,0));"
 			/>
 		</div>
